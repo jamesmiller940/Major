@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Human Lens 3.0 | DKU Diagnostic</title>
+    <style>
+        :root { --dku-blue: #003087; --dku-gold: #E2AD35; --bg: #ffffff; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: #333; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        #game-container { background: white; max-width: 100%; width: 100%; padding: 20px; border-radius: 8px; border: 1px solid #e0e4e8; }
+        h1 { color: var(--dku-blue); text-align: center; font-size: 1.5rem; margin-top: 0; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .progress-container { margin-bottom: 20px; text-align: center; font-size: 0.8rem; font-weight: bold; color: var(--dku-blue); }
+        .progress-bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.3s; }
+        .scenario-text { font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4; font-weight: 600; color: #111; }
+        .choice-btn { display: block; width: 100%; padding: 14px; margin: 8px 0; border: 1.5px solid #e0e4e8; border-radius: 6px; cursor: pointer; text-align: left; font-size: 0.9rem; transition: all 0.2s; background: white; line-height: 1.3; }
+        .choice-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; }
+        .btn-label { font-weight: bold; color: var(--dku-blue); margin-right: 5px; }
+        #results { display: none; }
+        .result-card { background: #f8faff; padding: 20px; border-radius: 10px; border-left: 6px solid var(--dku-blue); margin-top: 15px; }
+        .score-box { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; font-size: 0.8rem; border-top: 1px solid #ddd; padding-top: 10px; }
+        .restart-btn { background: var(--dku-blue); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>The Human Lens 3.0</h1>
+    <p class="subtitle">Diagnostic for Humanities Inquiry</p>
+    
+    <div class="progress-container">
+        <span id="q-num">1</span> / 20
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    </div>
+
+    <div id="quiz-area"></div>
+
+    <div id="results">
+        <div style="text-align: center;">
+            <h2>Your Profile</h2>
+        </div>
+        <div id="result-detail" class="result-card"></div>
+        <button class="restart-btn" onclick="location.reload()">Restart Diagnostic</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { s: "A massive dam is proposed for a historic river valley. What is your primary concern?", choices: [ { text: "Predicting the project's ROI and the energy-efficiency ratios.", cat: "quant" }, { text: "Tracing the river's role in local folklore and cultural memory.", cat: "lit" }, { text: "Examining rights of nature vs human utility through logic.", cat: "phil" }, { text: "Investigating the river's status in local religious practices.", cat: "rel" } ] },
+        { s: "You are investigating the 'New Silk Road'. Where does your curiosity lead?", choices: [ { text: "Analyzing the debt-sustainability using fiscal modeling.", cat: "quant" }, { text: "Comparing modern state rhetoric to Tang Dynasty narratives.", cat: "gcs" }, { text: "Researching 19th-century archives to see how power repeats.", cat: "hist" }, { text: "Analyzing travelogues and novels written along the route.", cat: "lit" } ] },
+        { s: "The concept of 'Justice' is debated globally. How do you define it?", choices: [ { text: "By measuring wealth distribution and social equity indices.", cat: "quant" }, { text: "By debating first principles and the 'veil of ignorance'.", cat: "phil" }, { text: "By studying justice across different Chinese dynasties.", cat: "gcs" }, { text: "By exploring 'Divine Law' and 'Karma' in world religions.", cat: "rel" } ] },
+        { s: "An ancient city is discovered underwater. What is the most important task?", choices: [ { text: "Using LIDAR and carbon dating to categorize artifacts.", cat: "quant" }, { text: "Reconstructing daily lives through letters and records.", cat: "hist" }, { text: "Asking what collapse tells us about human vanity.", cat: "phil" }, { text: "Deciphering temple inscriptions for lost cosmological beliefs.", cat: "rel" } ] },
+        { s: "AI begins to mimic human empathy. What is the most pressing question?", choices: [ { text: "Statistical likelihood of passing a standardized Turing Test.", cat: "quant" }, { text: "How this shifts our definition of 'The Soul' or 'The Person'?", cat: "phil" }, { text: "How this changes narratives of 'The Human' in literature.", cat: "lit" }, { text: "Does AI become a new object of worship, a 'techno-god'?", cat: "rel" } ] },
+        { s: "A global pandemic shifts how we live. How do you document it?", choices: [ { text: "Mapping R-naught values and socio-economic impacts.", cat: "quant" }, { text: "Writing a history of how past plagues transformed power.", cat: "hist" }, { text: "Collecting stories to create a 'mosaic of the human spirit'.", cat: "lit" }, { text: "Exploring how the TCM debate reflects modern identity.", cat: "gcs" } ] },
+        { s: "You are studying the decline of traditional marriage. What is the best method?", choices: [ { text: "Running a regression on marriage rates vs education levels.", cat: "quant" }, { text: "Examining the evolution of 'Filial Piety' in Chinese texts.", cat: "gcs" }, { text: "Analyzing shifting metaphors for 'Family' in modern novels.", cat: "lit" }, { text: "Investigating the changing role of rituals in institutions.", cat: "rel" } ] },
+        { s: "The climate is changing rapidly. What do we need most?", choices: [ { text: "Better atmospheric models and global carbon markets.", cat: "quant" }, { text: "A re-evaluation of 'Wu Wei' as environmental ethics.", cat: "rel" }, { text: "Historical study of civilizations that failed via climate.", cat: "hist" }, { text: "Philosophical inquiry into duties toward future generations.", cat: "phil" } ] },
+        { s: "A new protest movement emerges. How do you understand it?", choices: [ { text: "Scraping social media to track network cluster analysis.", cat: "quant" }, { text: "Reading poetry and manifestos for hidden meaning.", cat: "lit" }, { text: "Analyzing historical roots of disobedience in that region.", cat: "hist" }, { text: "Debating limits of state authority vs individual liberty.", cat: "phil" } ] },
+        { s: "Viewing a 12th-century scroll. What grabs you?", choices: [ { text: "Chemical composition of ink and market price.", cat: "quant" }, { text: "Brushstrokes as visual language of psychological state.", cat: "lit" }, { text: "The Song Dynasty court context that commissioned it.", cat: "gcs" }, { text: "Landscape as representation of metaphysical ideas.", cat: "rel" } ] },
+        { s: "A small town is disappearing. How do you save its memory?", choices: [ { text: "Digitizing tax and property records into a database.", cat: "quant" }, { text: "Oral history project to capture voices of old residents.", cat: "hist" }, { text: "Analyzing the town's 'mythology' and identity.", cat: "rel" }, { text: "Investigating how unique dialect reflects its history.", cat: "lit" } ] },
+        { s: "What is the future of 'Privacy' in a digital world?", choices: [ { text: "Data-encryption standards and cybersecurity indices.", cat: "quant" }, { text: "Philosophical debate on the 'Right to be Forgotten'.", cat: "phil" }, { text: "Study of how surveillance functioned in Chinese history.", cat: "gcs" }, { text: "Inquiry into the impact of 'Always Being Watched'.", cat: "lit" } ] },
+        { s: "Why do we feel 'Nostalgia' for things we never experienced?", choices: [ { text: "Evolutionary psychological study on brain patterns.", cat: "quant" }, { text: "Literary analysis of 'The Golden Age' trope.", cat: "lit" }, { text: "Historical investigation of nostalgia as a disease.", cat: "hist" }, { text: "Philosophical look at 'Time' and the present moment.", cat: "phil" } ] },
+        { s: "The moon is being colonized. What is the priority?", choices: [ { text: "Calculating oxygen production and mineral extraction.", cat: "quant" }, { text: "Establishing 'Cosmic Ethics' for new settlements.", cat: "phil" }, { text: "Asking how a sacred symbol is now desacralized.", cat: "rel" }, { text: "Drafting a history of humanity as a multi-planet species.", cat: "hist" } ] },
+        { s: "A billionaire buys a major newspaper. What are you worried about?", choices: [ { text: "Market consolidation and change in industry stock value.", cat: "quant" }, { text: "Historical role of the Public Sphere in democracy.", cat: "hist" }, { text: "Power of narrative to shape truth and 'bought' stories.", cat: "lit" }, { text: "Ethical responsibility of the Intellectual today.", cat: "phil" } ] },
+        { s: "The 'Great Wall'. What is its most important aspect?", choices: [ { text: "Structural engineering and logistical cost.", cat: "quant" }, { text: "Function as a border between 'Civilization' and 'Barbarism'.", cat: "gcs" }, { text: "Psychological impact as a metaphor in literature.", cat: "lit" }, { text: "Relationship between walls and the 'Sacred Center'.", cat: "rel" } ] },
+        { s: "Why is Shakespeare still read in China today?", choices: [ { text: "Statistical study on translation sales and trends.", cat: "quant" }, { text: "Analysis of universal archetypes in a Chinese context.", cat: "lit" }, { text: "Study of his introduction into China in the 19th c.", cat: "gcs" }, { text: "Philosophical inquiry into the nature of tragedy.", cat: "phil" } ] },
+        { s: "A sentient robot asks for 'Rights'. How do you respond?", choices: [ { text: "Test sentience via mathematical neural mapping.", cat: "quant" }, { text: "Review historical precedents of expanding rights.", cat: "hist" }, { text: "Debate logical definition of 'Consciousness'.", cat: "phil" }, { text: "Ask if it has a 'Soul' and what creation means.", cat: "rel" } ] },
+        { s: "Studying the 'Silk Road' in a village. What do you look at?", choices: [ { text: "Trade volume and economic shift since the new road.", cat: "quant" }, { text: "Local folklore and legends survived from antiquity.", cat: "gcs" }, { text: "Religious architecture and how faiths left marks.", cat: "rel" }, { text: "History of local lineage and centuries of migration.", cat: "hist" } ] },
+        { s: "The world is ending. What is the last book you save?", choices: [ { text: "An encyclopedia of scientific and math knowledge.", cat: "quant" }, { text: "Greatest poems ever written about love and loss.", cat: "lit" }, { text: "Foundational religious texts of the great faiths.", cat: "rel" }, { text: "Philosophical treatise on facing death with reason.", cat: "phil" } ] }
+    ];
+
+    let scores = { quant: 0, hist: 0, lit: 0, gcs: 0, phil: 0, rel: 0 };
+    let currentIdx = 0;
+
+    function renderQuestion() {
+        const quizArea = document.getElementById('quiz-area');
+        const s = questions[currentIdx];
+        quizArea.innerHTML = `
+            <div class="question active">
+                <p class="scenario-text">${s.s}</p>
+                ${s.choices.map((c, i) => `
+                    <button class="choice-btn" onclick="tally('${c.cat}')">
+                        <span class="btn-label">${i+1}:</span> ${c.text}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+        document.getElementById('q-num').innerText = currentIdx + 1;
+        document.getElementById('progress').style.width = `${((currentIdx) / 20) * 100}%`;
+    }
+
+    function tally(cat) {
+        scores[cat]++;
+        currentIdx++;
+        if (currentIdx < questions.length) { renderQuestion(); } else { showResults(); }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('progress').style.width = '100%';
+        const detail = document.getElementById('result-detail');
+        const {quant, ...humanities} = scores;
+        const sorted = Object.entries(humanities).sort((a,b) => b[1] - a[1]);
+        const topHum = sorted[0][0];
+        
+        const contentMap = {
+            hist: { m: "History", d: "You seek context. You prefer archives and narrative contingency over abstract mathematical laws." },
+            lit: { m: "Literature", d: "You seek interiority. You believe metaphors and symbols reveal the deepest human truths." },
+            gcs: { m: "Global China Studies", d: "You are a civilizational thinker. You value the 'Total History' of China as a lens for the global future." },
+            phil: { m: "Philosophy", d: "You are an architect of logic. You strip away noise to find the first principles of justice and ethics." },
+            rel: { m: "Religious Studies", d: "You are an explorer of the sacred. You study the rituals and myths that drive deep human motivations." }
+        };
+
+        const result = scores.quant > 12 ? { m: "Quantitative Social Science", d: "You prefer universal laws and empirical measurement." } : contentMap[topHum];
+
+        detail.innerHTML = `
+            <h3>${result.m}</h3>
+            <p>${result.d}</p>
+            <div class="score-box">
+                <div>Hist: ${scores.hist} | Lit: ${scores.lit}</div>
+                <div>GCS: ${scores.gcs} | Phil: ${scores.phil}</div>
+                <div>Rel: ${scores.rel} | Quant: ${scores.quant}</div>
+            </div>
+        `;
+    }
+    renderQuestion();
+</script>
+</body>
+</html>
