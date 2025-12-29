@@ -3,31 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Human Lens | Major Diagnostic Tool</title>
+    <title>The Human Lens 4.1 | DKU Major Diagnostic</title>
     <style>
-        :root { --dku-blue: #003087; --dku-gold: #155343; --bg: #ffffff; --text: #333; }
+        :root { 
+            --dku-green: #155343; 
+            --dku-blue: #003087; 
+            --dku-gold: #E2AD35; 
+            --bg: #ffffff; 
+            --text: #333; 
+        }
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f7f9; color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        #app-container { background: white; max-width: 800px; width: 100%; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 10px solid var(--dku-blue); }
-        h1 { color: var(--dku-blue); text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        #app-container { background: white; max-width: 800px; width: 100%; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 10px solid var(--dku-green); }
+        h1 { color: var(--dku-green); text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
         .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-style: italic; }
-        .progress-container { margin-bottom: 30px; text-align: center; font-weight: bold; color: var(--dku-blue); }
+        .progress-container { margin-bottom: 30px; text-align: center; font-weight: bold; color: var(--dku-green); }
         .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; margin-top: 10px; }
         .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.3s ease; }
-        .scenario-text { font-size: 1.25rem; margin-bottom: 25px; line-height: 1.5; font-weight: 600; color: #111; border-left: 5px solid var(--dku-gold); padding-left: 15px; }
+        .scenario-text { font-size: 1.25rem; margin-bottom: 25px; line-height: 1.5; font-weight: 600; color: #111; border-left: 5px solid var(--dku-green); padding-left: 15px; }
         .choice-btn { display: block; width: 100%; padding: 18px; margin: 12px 0; border: 1.5px solid #e0e4e8; border-radius: 8px; cursor: pointer; text-align: left; font-size: 1rem; transition: all 0.2s; background: white; line-height: 1.4; }
-        .choice-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; transform: translateX(5px); }
+        .choice-btn:hover { border-color: var(--dku-green); background: #f0f7f5; transform: translateX(5px); }
         #results { display: none; }
-        .result-card { background: #f8faff; padding: 30px; border-radius: 12px; border-left: 10px solid var(--dku-blue); margin-top: 20px; }
+        .result-card { background: #f0f7f5; padding: 30px; border-radius: 12px; border-left: 10px solid var(--dku-green); margin-top: 20px; }
         .score-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9rem; }
-        .restart-btn { background: var(--dku-blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
+        .restart-btn { background: var(--dku-green); color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
         @media (max-width: 600px) { #app-container { padding: 20px; } .scenario-text { font-size: 1.1rem; } }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <h1>Pathways to Research</h1>
-    <p class="subtitle">Diagnostic Inquiry for Humanities Majors</p>
+    <h1>The Human Lens 4.1</h1>
+    <p class="subtitle">Official Major Diagnostic for Duke Kunshan University</p>
     
     <div class="progress-container">
         Inquiry <span id="q-num">1</span> of 15
@@ -120,14 +126,14 @@
         const topHum = sorted[0][0];
         
         const contentMap = {
-            hist: { m: "History", d: "You seek context. You prefer the specificity of archives and narrative over abstract mathematical laws." },
-            lit: { m: "Literature", d: "You seek interiority. You believe metaphors and stories reveal the deepest truths of our shared psyche." },
-            gcs: { m: "Global China Studies", d: "You are a civilizational thinker. You value the 'Total History' of China as a lens for the global future." },
-            phil: { m: "Philosophy", d: "You are an architect of logic. You strip away noise to find the first principles of justice and truth." },
-            rel: { m: "Religious Studies", d: "You are an explorer of the sacred. You study the rituals and myths that drive deep human motivations." }
+            hist: { m: "History", d: "You are an explorer of continuity and change. You value archives and narratives over abstract mathematical formulas." },
+            lit: { m: "Literature", d: "You are a seeker of meaning. You believe metaphors and interiority reveal the deepest truths of the human condition." },
+            gcs: { m: "Global China Studies", d: "You are a civilizational thinker. You value the 'Total History' of China as a primary lens for understanding the global future." },
+            phil: { m: "Philosophy", d: "You are an architect of thought. You seek the first principles of logic, ethics, and justice." },
+            rel: { m: "Religious Studies", d: "You are an investigator of the sacred. You study the myths and rituals that drive deep human motivations." }
         };
 
-        const result = scores.quant > 10 ? { m: "Quantitative Social Science", d: "You prefer universal laws and empirical measurement as your primary mode of inquiry." } : contentMap[topHum];
+        const result = scores.quant > 10 ? { m: "Quantitative Social Science", d: "You prefer universal laws and empirical data as your primary mode of inquiry." } : contentMap[topHum];
 
         detail.innerHTML = `<h3>Match: ${result.m}</h3><p>${result.d}</p>
             <div class="score-summary">
