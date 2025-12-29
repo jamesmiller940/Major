@@ -3,428 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Human Lens 5.0 | Bilingual Major Diagnostic</title>
+    <title>Choosing your Research Questions | Major Diagnostic Tool</title>
     <style>
-        :root { --dku-blue: #003087; --dku-gold: #E2AD35; --bg: #ffffff; }
-        body { font-family: "PingFang SC", "Microsoft YaHei", Helvetica, Arial, sans-serif; background: var(--bg); color: #333; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        #game-container { background: white; max-width: 100%; width: 100%; padding: 25px; border-radius: 8px; border: 1px solid #e0e4e8; box-sizing: border-box; }
-        h1 { color: var(--dku-blue); text-align: center; font-size: 1.6rem; margin-top: 0; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; }
-        .progress-container { margin-bottom: 20px; text-align: center; font-size: 0.8rem; font-weight: bold; color: var(--dku-blue); }
-        .progress-bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.3s; }
-        .scenario-text { font-size: 1.15rem; margin-bottom: 20px; line-height: 1.5; font-weight: 600; color: #111; border-left: 5px solid var(--dku-gold); padding-left: 15px; }
-        .zh-text { display: block; font-size: 0.95rem; font-weight: normal; color: #444; margin-top: 5px; }
-        .choice-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 1.5px solid #e0e4e8; border-radius: 6px; cursor: pointer; text-align: left; font-size: 0.95rem; transition: all 0.2s; background: white; line-height: 1.4; }
-        .choice-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; }
-        .choice-zh { display: block; font-size: 0.85rem; color: #666; margin-top: 4px; }
+        :root { --dku-blue: #003087; --dku-gold: #E2AD35; --bg: #ffffff; --text: #333; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f7f9; color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        #app-container { background: white; max-width: 800px; width: 100%; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 10px solid var(--dku-blue); }
+        h1 { color: var(--dku-blue); text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-style: italic; }
+        .progress-container { margin-bottom: 30px; text-align: center; font-weight: bold; color: var(--dku-blue); }
+        .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; margin-top: 10px; }
+        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.3s ease; }
+        .scenario-text { font-size: 1.25rem; margin-bottom: 25px; line-height: 1.5; font-weight: 600; color: #111; border-left: 5px solid var(--dku-gold); padding-left: 15px; }
+        .choice-btn { display: block; width: 100%; padding: 18px; margin: 12px 0; border: 1.5px solid #e0e4e8; border-radius: 8px; cursor: pointer; text-align: left; font-size: 1rem; transition: all 0.2s; background: white; line-height: 1.4; }
+        .choice-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; transform: translateX(5px); }
         #results { display: none; }
-        .result-card { background: #f8faff; padding: 20px; border-radius: 10px; border-left: 6px solid var(--dku-blue); margin-top: 15px; }
-        .score-box { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; font-size: 0.85rem; border-top: 1px solid #ddd; padding-top: 15px; }
-        .restart-btn { background: var(--dku-blue); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .result-card { background: #f8faff; padding: 30px; border-radius: 12px; border-left: 10px solid var(--dku-blue); margin-top: 20px; }
+        .score-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9rem; }
+        .restart-btn { background: var(--dku-blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
+        @media (max-width: 600px) { #app-container { padding: 20px; } .scenario-text { font-size: 1.1rem; } }
     </style>
 </head>
 <body>
 
-<div id="game-container">
-    <h1>The Human Lens | 人文之镜 5.0</h1>
-    <p class="subtitle">Bilingual Major Diagnostic for DKU Freshmen<br>昆山杜克大学本科专业诊断工具</p>
+<div id="app-container">
+    <h1>The Human Lens 4.0</h1>
+    <p class="subtitle">Diagnostic Inquiry for Liberal Arts Pathways</p>
     
     <div class="progress-container">
-        Question / 问题 <span id="q-num">1</span> of 15
+        Inquiry <span id="q-num">1</span> of 15
         <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
     </div>
 
     <div id="quiz-area"></div>
 
     <div id="results">
-        <div style="text-align: center;"><h2>Diagnostic Result / 诊断结果</h2></div>
+        <div style="text-align: center;"><h2>Diagnostic Profile</h2></div>
         <div id="result-detail" class="result-card"></div>
-        <button class="restart-btn" onclick="location.reload()">Start New Session / 开始新会话</button>
+        <button class="restart-btn" onclick="location.reload()">Begin New Session</button>
     </div>
 </div>
 
 <script>
     const repo = [
-        { 
-            s: "A historic river valley is being dammed. What is your focus?", 
-            szh: "一座历史悠久的河谷将被筑坝发电。你的关注点是？",
-            choices: [
-                { en: "Modeling ROI and energy-efficiency ratios.", zh: "建立投资回报率和能源效率比模型。", cat: "quant" },
-                { en: "How the valley's disappearance impacts cultural memory.", zh: "河谷的消失如何影响当地的文化记忆。", cat: "lit" },
-                { en: "The ethics of nature's rights versus human utility.", zh: "自然权利与人类功用之间的伦理博弈。", cat: "phil" },
-                { en: "The river's status as a 'sacred ancestor'.", zh: "河流作为当地习俗中“神圣祖先”的地位。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Investigating the 'New Silk Road', what captures your interest?", 
-            szh: "在调研“新丝绸之路”时，什么最吸引你？",
-            choices: [
-                { en: "Fiscal modeling of debt-sustainability.", zh: "东道国债务可持续性的财政建模。", cat: "quant" },
-                { en: "Comparing modern rhetoric to Tang Dynasty narratives.", zh: "将现代国家话语与唐代叙事进行对比。", cat: "gcs" },
-                { en: "Researching 19th-century archives of trade.", zh: "研究19世纪的贸易与权力档案。", cat: "hist" },
-                { en: "Travelogues and novels written along the route.", zh: "沿线旅行者所写的游记与小说。", cat: "lit" }
-            ]
-        },
-        { 
-            s: "Defining 'Justice' in a global forum. How do you start?", 
-            szh: "在全球论坛上定义“正义”。你如何开始？",
-            choices: [
-                { en: "By measuring wealth distribution and equity indices.", zh: "通过衡量财富分配和社会公平指数。", cat: "quant" },
-                { en: "Debating first principles and the 'veil of ignorance'.", zh: "辩论基本原则和“无知之幕”。", cat: "phil" },
-                { en: "Studying justice in the Song and Ming eras.", zh: "研究宋明时期的正义观。", cat: "gcs" },
-                { en: "Exploring 'Divine Law' and 'Karma' in world religions.", zh: "探索世界宗教中的“神圣法则”与“因果”。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "An ancient city is found underwater. What is the priority?", 
-            szh: "发现了一座水下古城。首要任务是？",
-            choices: [
-                { en: "Using LIDAR and carbon dating to categorize artifacts.", zh: "利用激光雷达和碳定年法对文物进行分类。", cat: "quant" },
-                { en: "Reconstructing daily lives through letters and records.", zh: "通过信件和记录重建居民的日常生活。", cat: "hist" },
-                { en: "Asking what collapse tells us about human vanity.", zh: "思考古城的倒塌揭示了人类虚荣心的什么。", cat: "phil" },
-                { en: "Deciphering temple inscriptions for lost belief systems.", zh: "破译寺庙铭文以寻找失落的信仰体系。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "AI mimics human empathy perfectly. What is the key question?", 
-            szh: "人工智能完美模拟人类共情。核心问题是？",
-            choices: [
-                { en: "The statistical likelihood of passing a Turing Test.", zh: "通过图灵测试的统计概率。", cat: "quant" },
-                { en: "How this shifts our definition of 'The Person'.", zh: "这如何改变我们对“人”的定义。", cat: "phil" },
-                { en: "How this changes narratives of 'The Human' in literature.", zh: "这如何改变文学中关于“人”的叙事。", cat: "lit" },
-                { en: "Whether AI can ever possess a 'Sacred Soul'.", zh: "人工智能是否能拥有“神圣的灵魂”。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "A global pandemic shifts society. How do you document it?", 
-            szh: "全球疫情改变了社会。你如何记录它？",
-            choices: [
-                { en: "Mapping R-naught values and socio-economic impact.", zh: "绘制R0值和对社会经济劳动力的影响。", cat: "quant" },
-                { en: "A history of how past plagues transformed state power.", zh: "研究过去瘟疫如何改变国家权力的历史。", cat: "hist" },
-                { en: "Collecting stories to create a 'mosaic of the spirit'.", zh: "收集个人故事以创造“精神的马赛克”。", cat: "lit" },
-                { en: "How the TCM debate reflects modern Chinese identity.", zh: "关于中医药的辩论如何反映现代中国身份。", cat: "gcs" }
-            ]
-        },
-        { 
-            s: "Studying the decline of marriage. What is your method?", 
-            szh: "研究婚姻率下降。你的方法是？",
-            choices: [
-                { en: "Regression analysis of marriage rates vs. education.", zh: "婚姻率与受教育水平的回归分析。", cat: "quant" },
-                { en: "The evolution of 'Filial Piety' in classic Chinese texts.", zh: "中国经典文献中“孝”思想的演变。", cat: "gcs" },
-                { en: "Analyzing shifting metaphors for 'Family' in novels.", zh: "分析现代小说中“家庭”隐喻的演变。", cat: "lit" },
-                { en: "Investigating rituals of union in religious institutions.", zh: "调研宗教机构中的结合仪式。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Climate change is accelerating. What do we need most?", 
-            szh: "气候变化正在加速。我们最需要什么？",
-            choices: [
-                { en: "Better atmospheric models and carbon market logistics.", zh: "更好的大气模型和碳市场运作逻辑。", cat: "quant" },
-                { en: "A re-evaluation of 'Wu Wei' as environmental ethics.", zh: "将“无为”重新评估为环境伦理。", cat: "rel" },
-                { en: "Historical study of civilizations that failed via climate.", zh: "对因气候原因而衰落的文明进行历史研究。", cat: "hist" },
-                { en: "Philosophical inquiry into duties toward future generations.", zh: "关于对后代责任的哲学探讨。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "A protest movement emerges. How do you understand it?", 
-            szh: "一场抗议运动爆发了。你如何理解它？",
-            choices: [
-                { en: "Scraping social media to track network cluster analysis.", zh: "抓取社交媒体数据以追踪网络聚类分析。", cat: "quant" },
-                { en: "Reading the movement's poetry for hidden meaning.", zh: "阅读运动中产生的诗歌以寻找隐藏的含义。", cat: "lit" },
-                { en: "Historical roots of civil disobedience in that region.", zh: "该地区公民抗命运动的历史渊源。", cat: "hist" },
-                { en: "Debating limits of state authority vs. individual liberty.", zh: "辩论国家权威与个人自由的界限。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "Viewing a 12th-century scroll. What grabs you?", 
-            szh: "欣赏一幅12世纪的卷轴。什么最吸引你？",
-            choices: [
-                { en: "Chemical composition of ink and market price.", zh: "墨水的化学成分和市场价格。", cat: "quant" },
-                { en: "Brushstrokes as visual language of psychological state.", zh: "笔触作为表达内心心理状态的视觉语言。", cat: "lit" },
-                { en: "The Song Dynasty court context that commissioned it.", zh: "委托创作该画作的宋代宫廷背景。", cat: "gcs" },
-                { en: "Landscape as representation of metaphysical ideas.", zh: "作为形而上学思想表征的山水景观。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "A small town is disappearing. How do you save its memory?", 
-            szh: "一个小镇正在消失。你如何留住它的记忆？",
-            choices: [
-                { en: "Digitizing tax and property records into a database.", zh: "将税务和财产记录数字化并存入数据库。", cat: "quant" },
-                { en: "Oral history project to capture voices of old residents.", zh: "开展口述史项目以捕捉老居民的声音。", cat: "hist" },
-                { en: "Analyzing the town's 'mythology' and sacred identity.", zh: "分析小镇的“神话”和神圣身份。", cat: "rel" },
-                { en: "How the town's unique dialect reflects its history.", zh: "小镇独特的方言如何反映其历史。", cat: "lit" }
-            ]
-        },
-        { 
-            s: "Digital privacy is vanishing. What is the core issue?", 
-            szh: "数字隐私正在消失。核心问题是？",
-            choices: [
-                { en: "Data-encryption standards and cybersecurity indices.", zh: "数据加密标准和网络安全指数。", cat: "quant" },
-                { en: "Philosophical debate on the 'Right to be Forgotten'.", zh: "关于“被遗忘权”的哲学辩论。", cat: "phil" },
-                { en: "Historical surveillance methods in imperial governance.", zh: "帝国治理中的历史监视手段。", cat: "gcs" },
-                { en: "Impact of 'Always Being Watched' on the soul.", zh: "“始终被注视”对灵魂的影响。", cat: "lit" }
-            ]
-        },
-        { 
-            s: "Why do we feel 'Nostalgia' for the past?", 
-            szh: "为什么我们会对过去感到“怀旧”？",
-            choices: [
-                { en: "Evolutionary psychological study on brain patterns.", zh: "关于大脑模式的进化心理学研究。", cat: "quant" },
-                { en: "Literary analysis of 'The Golden Age' trope.", zh: "对文学中“黄金时代”比喻的分析。", cat: "lit" },
-                { en: "Historical investigation of nostalgia as a disease.", zh: "将怀旧作为一种疾病的历史调查。", cat: "hist" },
-                { en: "Philosophical look at 'Time' and the present moment.", zh: "关于“时间”与当下的哲学思考。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "The moon is being colonized. What is the priority?", 
-            szh: "月球正在被殖民。优先事项是？",
-            choices: [
-                { en: "Calculating oxygen production and mineral extraction.", zh: "计算氧气产量和矿物开采率。", cat: "quant" },
-                { en: "Establishing 'Cosmic Ethics' for new settlements.", zh: "为新定居点建立“宇宙伦理”。", cat: "phil" },
-                { en: "Asking how a sacred symbol is now desacralized.", zh: "思考一个神圣象征如今如何被去神圣化。", cat: "rel" },
-                { en: "Drafting a history of humanity as a multi-planet species.", zh: "撰写人类作为多行星物种的历史。", cat: "hist" }
-            ]
-        },
-        { 
-            s: "A billionaire buys a major newspaper. Why worry?", 
-            szh: "一位亿万富翁买下了一家主流报纸。为何担忧？",
-            choices: [
-                { en: "Market consolidation and industry stock value change.", zh: "市场整合和行业股票价值变化。", cat: "quant" },
-                { en: "The historical role of the Public Sphere in democracy.", zh: "公共领域在民主中的历史作用。", cat: "hist" },
-                { en: "The power of narrative to shape 'bought' truths.", zh: "叙事塑造“买来的”真相的力量。", cat: "lit" },
-                { en: "Ethical responsibility of the Intellectual today.", zh: "当今知识分子的伦理责任。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "The 'Great Wall'. What is its most important aspect?", 
-            szh: "关于“长城”，最重要的方面是？",
-            choices: [
-                { en: "Structural engineering and logistical cost.", zh: "结构工程和后勤成本。", cat: "quant" },
-                { en: "Its function as a border between civilizations.", zh: "它作为文明之间边界的功能。", cat: "gcs" },
-                { en: "Psychological impact as a metaphor in literature.", zh: "它作为文学隐喻的心理影响。", cat: "lit" },
-                { en: "Its relationship to the concept of the 'Sacred Center'.", zh: "它与“神圣中心”概念的关系。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Why is Shakespeare still read in China today?", 
-            szh: "为什么今天在中国仍有人读莎士比亚？",
-            choices: [
-                { en: "Statistical study on translation sales and trends.", zh: "关于翻译版本销量和趋势的统计研究。", cat: "quant" },
-                { en: "Universal archetypes in a Chinese context.", zh: "中国背景下的普世原型分析。", cat: "lit" },
-                { en: "History of his introduction into China in the 19th c.", zh: "他在19世纪被引入中国的历史。", cat: "gcs" },
-                { en: "Philosophical inquiry into the nature of tragedy.", zh: "关于悲剧本质的哲学探讨。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "A sentient robot asks for 'Rights'. How do you respond?", 
-            szh: "一个有意识的机器人要求“权利”。你如何回应？",
-            choices: [
-                { en: "Test sentience via mathematical neural mapping.", zh: "通过数学神经图谱测试其意识。", cat: "quant" },
-                { en: "Review historical precedents of expanding rights.", zh: "回顾扩大权利的历史先例。", cat: "hist" },
-                { en: "Debate logical definition of 'Consciousness'.", zh: "辩论“意识”的逻辑定义。", cat: "phil" },
-                { en: "Ask if it has a 'Soul' and what creation means.", zh: "询问它是否有“灵魂”以及创造的意义。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Studying the 'Silk Road' in a village. What do you look at?", 
-            szh: "在一个村庄研究“丝绸之路”。你看什么？",
-            choices: [
-                { en: "Trade volume and economic shift.", zh: "贸易额和经济变化。", cat: "quant" },
-                { en: "Local folklore and legends survived from antiquity.", zh: "流传至今的当地民间传说和神话。", cat: "gcs" },
-                { en: "Religious architecture and how faiths left marks.", zh: "宗教建筑以及信仰如何留下烙印。", cat: "rel" },
-                { en: "History of local lineage and centuries of migration.", zh: "当地宗族历史和几个世纪的迁徙。", cat: "hist" }
-            ]
-        },
-        { 
-            s: "The world is ending. What is the last book you save?", 
-            szh: "世界即将毁灭。你最后保存哪本书？",
-            choices: [
-                { en: "An encyclopedia of scientific and math knowledge.", zh: "一本科学和数学知识百科全书。", cat: "quant" },
-                { en: "Greatest poems ever written about love and loss.", zh: "关于爱与失去的最伟大诗集。", cat: "lit" },
-                { en: "Foundational religious texts of the great faiths.", zh: "各大信仰的基础宗教文献。", cat: "rel" },
-                { en: "Philosophical treatise on facing death with reason.", zh: "关于理性面对死亡的哲学论著。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "A mega-city is being planned. Design principle?", 
-            szh: "计划建设一座超大城市。设计原则是？",
-            choices: [
-                { en: "Optimization of traffic flow and resource data.", zh: "交通流和资源分配数据的优化。", cat: "quant" },
-                { en: "Preservation of historical neighborhoods.", zh: "历史街区和文化遗产的保护。", cat: "hist" },
-                { en: "The philosophical question of 'The Human Scale'.", zh: "关于“人类尺度”的哲学问题。", cat: "phil" },
-                { en: "How layout reflects traditional feng shui order.", zh: "布局如何反映传统的风水或宇宙秩序。", cat: "gcs" }
-            ]
-        },
-        { 
-            s: "Social media and mental health. How do you study it?", 
-            szh: "社交媒体与心理健康。你如何研究？",
-            choices: [
-                { en: "Large-scale correlation study on screen time.", zh: "关于屏幕时间的大规模相关性研究。", cat: "quant" },
-                { en: "Analyzing 'Self' as digital performance in literature.", zh: "分析文学中作为数字表演的“自我”。", cat: "lit" },
-                { en: "Investigating ethical limits of the attention economy.", zh: "调查注意力经济的伦理界限。", cat: "phil" },
-                { en: "Comparing addiction to 'Spirit Possession'.", zh: "将数字成瘾与传统的“附身”概念进行对比。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Ancestry is changing with DNA kits. Why matter?", 
-            szh: "DNA检测正在改变祖先观念。为何重要？",
-            choices: [
-                { en: "Accuracy and bias of genetic algorithms.", zh: "基因算法的准确性和统计偏见。", cat: "quant" },
-                { en: "History of how family trees justified power.", zh: "家谱如何被用来证明权力合法性的历史。", cat: "hist" },
-                { en: "Literary theme of 'Search for Roots' in migrant stories.", zh: "移民故事中“寻根”的文学主题。", cat: "lit" },
-                { en: "Religious duty of honoring ancestors in a secular age.", zh: "世俗时代祭奠祖先的宗教义务。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "A forest is declared 'Self-Owned'. Your reaction?", 
-            szh: "一片森林被法院宣布为“自有”。你的反应是？",
-            choices: [
-                { en: "Calculating economic impact on timber markets.", zh: "计算对木材和碳市场的经济影响。", cat: "quant" },
-                { en: "Researching history of 'Personhood' for non-humans.", zh: "研究非人类实体的“人格”历史。", cat: "hist" },
-                { en: "Exploring Daoist concept of 'Self-So-Ness' (Ziran).", zh: "探索道家的“自然”概念。", cat: "gcs" },
-                { en: "Questioning logical boundaries of 'Subject' and 'Object'.", zh: "质疑“主体”与“客体”的逻辑边界。", cat: "phil" }
-            ]
-        },
-        { 
-            s: "A remote tribe sees a satellite. What is the story?", 
-            szh: "一个偏远部落第一次看到卫星。故事是？",
-            choices: [
-                { en: "Technical expansion of global telecommunications.", zh: "全球电信覆盖的技术扩张。", cat: "quant" },
-                { en: "The narrative of 'First Contact' as a literary archetype.", zh: "作为文学原型的“第一次接触”叙事。", cat: "lit" },
-                { en: "Disruption of sacred cosmology by technology.", zh: "技术对神圣宇宙观的扰动。", cat: "rel" },
-                { en: "History of colonialism through technology lens.", zh: "通过技术视角透视的殖民史。", cat: "hist" }
-            ]
-        },
-        { 
-            s: "Universal Basic Income is proposed. Primary lens?", 
-            szh: "提议实行全民基本收入。首要视角是？",
-            choices: [
-                { en: "Fiscal feasibility and impact on labor supply.", zh: "财政可行性以及对劳动力供应的影响。", cat: "quant" },
-                { en: "Connection between 'Work' and 'Human Dignity'.", zh: "“工作”与“人类尊严”之间的哲学联系。", cat: "phil" },
-                { en: "History of utopian experiments and why they failed.", zh: "乌托邦实验的历史及其失败原因。", cat: "hist" },
-                { en: "How religions define 'Charity' versus 'Justice'.", zh: "宗教如何定义“施舍”与“正义”。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Education in the Metaverse. Biggest loss?", 
-            szh: "元宇宙教育。最大的损失是？",
-            choices: [
-                { en: "Quantifiable dip in standardized test scores.", zh: "标准化考试成绩的可量化下降。", cat: "quant" },
-                { en: "Loss of 'The Campus' as space for civic discourse.", zh: "失去作为公民话语空间的“校园”。", cat: "hist" },
-                { en: "Question: Can wisdom be taught without presence?", zh: "问题：没有在场，智慧能否被传授？", cat: "phil" },
-                { en: "Literary representation of 'Virtual' vs 'Real'.", zh: "“虚”与“实”的文学表现。", cat: "lit" }
-            ]
-        },
-        { 
-            s: "Space mining is a reality. What is the first law?", 
-            szh: "太空采矿成为现实。第一部法律是？",
-            choices: [
-                { en: "Framework for property rights and extraction quotas.", zh: "产权框架和开采配额。", cat: "quant" },
-                { en: "Ethical question of humanity's 'Stewardship'.", zh: "人类作为宇宙“管家”的伦理问题。", cat: "phil" },
-                { en: "History of the 'Gold Rush' and impact on lands.", zh: "“淘金热”的历史及其对土地的影响。", cat: "hist" },
-                { en: "Religious view of 'The Heavens' as common property.", zh: "将“诸天”视为共同财产的宗教观点。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "Why do some stories become 'Classics'?", 
-            szh: "为什么有些故事能成为“经典”？",
-            choices: [
-                { en: "Data analysis of sales and library circulation.", zh: "销量和图书馆流通模式的数据分析。", cat: "quant" },
-                { en: "Literary mechanics of why tropes resonate.", zh: "特定比喻为何能产生跨世纪共鸣的文学机制。", cat: "lit" },
-                { en: "History of 'The Canon' and power structures.", zh: "“正典”的历史以及构建它的权力结构。", cat: "hist" },
-                { en: "How stories serve as 'Sacred Myths' for secular society.", zh: "故事如何作为世俗社会的“神圣神话”。", cat: "rel" }
-            ]
-        },
-        { 
-            s: "A 'Global Language' is created. Concern?", 
-            szh: "创造了一门“全球语言”。担忧是？",
-            choices: [
-                { en: "Linguistic efficiency and information transfer.", zh: "语言效率和信息传递速度。", cat: "quant" },
-                { en: "Loss of worldviews embedded in local languages.", zh: "嵌入在地方语言中的独特世界观的丧失。", cat: "gcs" },
-                { en: "Philosophical link between language and truth.", zh: "语言与真理认知之间的哲学联系。", cat: "phil" },
-                { en: "History of 'Universal Languages' from Latin to Esperanto.", zh: "从拉丁语到世界语的“通用语言”历史。", cat: "hist" }
-            ]
-        }
-    ];
-
-    let scores = { quant: 0, hist: 0, lit: 0, gcs: 0, phil: 0, rel: 0 };
-    let activeQuestions = [];
-    let currentIdx = 0;
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    function initGame() {
-        activeQuestions = shuffle([...repo]).slice(0, 15);
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        const quizArea = document.getElementById('quiz-area');
-        const s = activeQuestions[currentIdx];
-        const shuffledChoices = shuffle([...s.choices]);
-        
-        quizArea.innerHTML = `
-            <div class="question active">
-                <p class="scenario-text">
-                    ${s.s}
-                    <span class="zh-text">${s.szh}</span>
-                </p>
-                ${shuffledChoices.map(c => `
-                    <button class="choice-btn" onclick="tally('${c.cat}')">
-                        ${c.en}
-                        <span class="choice-zh">${c.zh}</span>
-                    </button>
-                `).join('')}
-            </div>
-        `;
-        document.getElementById('q-num').innerText = currentIdx + 1;
-        document.getElementById('progress').style.width = `${((currentIdx) / 15) * 100}%`;
-    }
-
-    function tally(cat) {
-        scores[cat]++;
-        currentIdx++;
-        if (currentIdx < activeQuestions.length) { renderQuestion(); } else { showResults(); }
-    }
-
-    function showResults() {
-        document.getElementById('quiz-area').style.display = 'none';
-        document.getElementById('results').style.display = 'block';
-        document.getElementById('progress').style.width = '100%';
-        const detail = document.getElementById('result-detail');
-        const {quant, ...humanities} = scores;
-        const sorted = Object.entries(humanities).sort((a,b) => b[1] - a[1]);
-        const topHum = sorted[0][0];
-        
-        const contentMap = {
-            hist: { m: "History / 历史学", d: "You seek context. You prefer archives over abstract laws.<br>你追求脉络。你更喜欢通过档案而非抽象法则来理解世界。" },
-            lit: { m: "Literature / 文学", d: "You seek meaning. You believe stories reveal the soul.<br>你追求意义。你相信故事能揭示人类灵魂的深处。" },
-            gcs: { m: "Global China Studies / 全球中国研究", d: "You seek civilizational depth. You see China as a global lens.<br>你追求文明的深度。你将中国视为透视全球未来的重要棱镜。" },
-            phil: { m: "Philosophy / 哲学", d: "You seek first principles. You use logic to find truth.<br>你追求基本原则。你通过逻辑思维来寻找真理。" },
-            rel: { m: "Religious Studies / 宗教学", d: "You seek the sacred. You study the myths that drive us.<br>你追求神圣性。你研究那些驱动人类行为的深层神话与仪式。" }
-        };
-
-        const result = scores.quant > 10 ? { m: "Quantitative Social Science / 定量社会科学", d: "You prefer data and empirical measurement.<br>你更倾向于使用数据和实证测量作为主要研究手段。" } : contentMap[topHum];
-
-        detail.innerHTML = `
-            <h3>${result.m}</h3>
-            <p>${result.d}</p>
-            <div class="score-box">
-                <div>Hist: ${scores.hist} | Lit: ${scores.lit}</div>
-                <div>GCS: ${scores.gcs} | Phil: ${scores.phil}</div>
-                <div>Rel: ${scores.rel} | Quant: ${scores.quant}</div>
-            </div>
-        `;
-    }
-
-    initGame();
-</script>
-</body>
-</html>
+        { s: "A historic river valley is being dammed for energy. What is your focus?", choices: [ { text: "Modeling ROI and energy-efficiency ratios for the region.", cat: "quant" }, { text: "How the valley's disappearance impacts local cultural memory.", cat: "lit" }, { text: "The ethics of nature's rights versus human utility.", cat: "phil" }, { text: "The river's status as a 'sacred ancestor' in local practice.", cat: "rel" } ] },
+        { s: "Investigating the 'New Silk Road', what captures your interest?", choices: [ { text: "Fiscal modeling of debt-sustainability in host countries.", cat: "quant" }, { text: "Comparing modern state rhetoric to Tang Dynasty narratives.", cat: "gcs" }, { text: "Researching 19th-century archives of trade and power.", cat: "hist" }, { text: "Travelogues and novels written by those moving along the route.", cat: "lit" } ] },
+        { s: "Defining 'Justice' in a global forum. How do you start?", choices: [ { text: "By measuring wealth distribution and equity indices.", cat: "quant" }, { text: "Debating first principles and the 'veil of ignorance'.", cat: "phil" }, { text: "Studying how justice was defined in the Song and Ming eras.", cat: "gcs" }, { text: "Exploring 'Divine Law' and 'Karma' in world religions.", cat: "rel" } ] },
+        { s: "An ancient city is found underwater. What is the priority?", choices: [ { text: "Using LIDAR and carbon dating to categorize artifacts.", cat: "quant" }, { text: "Reconstructing daily lives through letters and records.", cat: "hist" }, { text: "Asking what collapse tells us about human vanity.", cat: "phil" }, { text: "Deciphering temple inscriptions for lost belief systems.", cat: "rel" } ] },
+        { s: "AI mimics human empathy perfectly. What is the key question?", choices: [ { text: "The statistical likelihood of passing a Turing Test.", cat: "quant" }, { text: "How this shifts our definition of 'The Person'.", cat: "phil" }, { text: "How this changes narratives of 'The Human' in literature.", cat: "lit" }, { text: "Whether AI can ever possess a 'Sacred Soul'.", cat: "rel" } ] },
+        { s: "A global pandemic shifts society. How do you document it?", choices: [ { text: "Mapping R-naught values and socio-economic labor impact.", cat: "quant" }, { text: "A history of how past plagues transformed state power.", cat: "hist" }, { text: "Collecting personal stories to create a 'mosaic of the spirit'.", cat: "lit" }, { text: "How the TCM debate reflects modern Chinese identity.", cat: "gcs" } ] },
+        { s: "Studying the decline of marriage. What is your method?", choices: [ { text: "Regression analysis of marriage rates vs. education levels.", cat: "quant" }, { text: "The evolution of 'Filial Piety' in classic Chinese texts.", cat: "gcs" }, { text: "Analyzing shifting metaphors for 'Family' in modern novels.", cat: "lit" }, { text: "Investigating rituals of union in religious institutions.", cat: "rel" } ] },
+        { s: "Climate change is accelerating. What do we need most?", choices: [ { text: "Better atmospheric models and carbon market logistics.", cat: "quant" }, { text: "A re-evaluation of 'Wu Wei' as environmental ethics.", cat: "rel" }, { text: "Historical study of civilizations that failed via climate.", cat: "hist" }, { text: "Philosophical inquiry into duties toward future generations.", cat: "phil" } ] },
+        { s: "A protest movement emerges. How do you understand it?", choices: [ { text: "Scraping social media to track network cluster analysis.", cat: "quant" }, { text: "Reading the movement's poetry for hidden meaning.", cat: "lit" }, { text: "Historical roots of civil disobedience in that region.", cat: "hist" }, { text: "Debating limits of state authority vs. individual liberty.", cat: "phil" } ] },
+        { s: "Viewing a 12th-century scroll. What grabs you?", choices: [ { text: "Chemical composition of ink and market price.", cat: "quant" }, { text: "Brushstrokes as visual language of psychological state.", cat: "lit" }, { text: "The Song Dynasty court context that commissioned it.", cat: "gcs" }, { text: "Landscape as representation of metaphysical ideas.", cat: "rel" } ] },
+        { s: "A small town is disappearing. How do you save its memory?", choices: [ { text: "Digitizing tax and property records into a database.", cat: "quant" }, { text: "Oral history project to capture voices of old residents.", cat: "hist" }, { text: "Analyzing the town's 'mythology' and sacred identity.", cat: "rel" }, { text: "How the town's unique dialect reflects its history.", cat: "lit" } ] },
+        { s: "Digital privacy is vanishing. What is the core issue?", choices: [ { text: "Data-encryption standards and cybersecurity indices.", cat: "quant" }, { text: "Philosophical debate on the 'Right to be Forgotten'.", cat: "phil" }, { text: "Historical surveillance methods in imperial governance.", cat: "gcs" }, { text: "Literary inquiry into the impact of 'Always Being Watched'.", cat: "lit" } ] },
+        { s: "Why do we feel 'Nostalgia' for the past?", choices: [ { text: "Evolutionary psychological study on brain patterns.", cat: "quant" }, { text: "Literary analysis of 'The Golden Age' trope.", cat: "lit" }, { text: "Historical investigation of nostalgia as a disease.", cat: "hist" }, { text: "Philosophical look at 'Time' and the present moment.", cat: "phil" } ] },
+        {
