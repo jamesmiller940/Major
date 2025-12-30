@@ -3,147 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Human Lens 4.1 | DKU Major Diagnostic</title>
+    <title>The Human Lens | DKU Major Diagnostic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --dku-green: #155343; 
-            --dku-blue: #003087; 
-            --dku-gold: #E2AD35; 
-            --bg: #ffffff; 
-            --text: #333; 
+        :root {
+            --dku-blue: #003087;
+            --dku-gold: #E2AD35;
+            --text-main: #1a1a1a;
+            --text-sub: #4b5563;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
         }
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f7f9; color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        #app-container { background: white; max-width: 800px; width: 100%; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 10px solid var(--dku-green); }
-        h1 { color: var(--dku-green); text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-style: italic; }
-        .progress-container { margin-bottom: 30px; text-align: center; font-weight: bold; color: var(--dku-green); }
-        .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; margin-top: 10px; }
-        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.3s ease; }
-        .scenario-text { font-size: 1.25rem; margin-bottom: 25px; line-height: 1.5; font-weight: 600; color: #111; border-left: 5px solid var(--dku-green); padding-left: 15px; }
-        .choice-btn { display: block; width: 100%; padding: 18px; margin: 12px 0; border: 1.5px solid #e0e4e8; border-radius: 8px; cursor: pointer; text-align: left; font-size: 1rem; transition: all 0.2s; background: white; line-height: 1.4; }
-        .choice-btn:hover { border-color: var(--dku-green); background: #f0f7f5; transform: translateX(5px); }
-        #results { display: none; }
-        .result-card { background: #f0f7f5; padding: 30px; border-radius: 12px; border-left: 10px solid var(--dku-green); margin-top: 20px; }
-        .score-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9rem; }
-        .restart-btn { background: var(--dku-green); color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
-        @media (max-width: 600px) { #app-container { padding: 20px; } .scenario-text { font-size: 1.1rem; } }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            padding: 50px;
+            border-radius: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-top: 6px solid var(--dku-blue);
+        }
+
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-family: 'Crimson Pro', serif; font-size: 2.2rem; margin: 0; color: var(--dku-blue); }
+        .tagline { font-size: 0.9rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
+
+        .progress-wrapper { margin-bottom: 30px; }
+        .progress-text { font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; color: var(--dku-blue); }
+        .progress-bar { height: 2px; background: #e5e7eb; position: relative; }
+        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.4s ease; }
+
+        .scenario-box { min-height: 100px; margin-bottom: 30px; }
+        .scenario-text { font-family: 'Crimson Pro', serif; font-size: 1.4rem; line-height: 1.4; color: #111; font-weight: 600; }
+
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn {
+            background: var(--white);
+            border: 1px solid #d1d5db;
+            padding: 16px 20px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+        }
+        .option-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; }
+        .option-btn span { font-weight: 600; color: var(--dku-blue); margin-right: 15px; font-size: 0.8rem; }
+
+        #results-screen { display: none; }
+        .result-title { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--dku-blue); margin-bottom: 15px; }
+        .result-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; font-size: 1.1rem; }
+        
+        .score-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; 
+            background: #f3f4f6; 
+            padding: 20px; 
+            border-radius: 4px;
+        }
+        .score-item { font-size: 0.8rem; font-weight: 600; color: var(--text-sub); }
+
+        .restart-btn { 
+            margin-top: 30px; 
+            background: var(--dku-blue); 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            cursor: pointer; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) { #app-container { padding: 25px; } }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <h1>Pathways to Humanistic Research</h1>
-    <p class="subtitle">Major Diagnostic for Duke Kunshan University</p>
+    <header>
+        <h1>The Human Lens</h1>
+        <div class="tagline">Major Diagnostic Tool</div>
+    </header>
 
-    <p class="subtitle">For each topic choose the research question that most appeals to you.</p>
-    
-    <div class="progress-container">
-        Inquiry <span id="q-num">1</span> of 15
-        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div id="quiz-screen">
+        <div class="progress-wrapper">
+            <div class="progress-text">Inquiry <span id="q-idx">1</span> / 20</div>
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        </div>
+        <div class="scenario-box">
+            <div id="scenario-text" class="scenario-text"></div>
+        </div>
+        <div id="options-grid" class="options-grid"></div>
     </div>
 
-    <div id="quiz-area"></div>
-
-    <div id="results">
-        <div style="text-align: center;"><h2>Diagnostic Profile</h2></div>
-        <div id="result-detail" class="result-card"></div>
-        <button class="restart-btn" onclick="location.reload()">Begin New Session</button>
+    <div id="results-screen">
+        <div class="result-title" id="major-match"></div>
+        <p class="result-desc" id="major-desc"></p>
+        <div class="score-grid" id="score-breakdown"></div>
+        <button class="restart-btn" onclick="location.reload()">Reset Diagnostic</button>
     </div>
 </div>
 
 <script>
-    const repo = [
-        { s: "A historic river valley is being dammed for energy. What is your focus?", choices: [ { text: "Modeling ROI and energy-efficiency ratios for the region.", cat: "quant" }, { text: "How the valley's disappearance impacts local cultural memory.", cat: "lit" }, { text: "The ethics of nature's rights versus human utility.", cat: "phil" }, { text: "The river's status as a 'sacred ancestor' in local practice.", cat: "rel" } ] },
-        { s: "Investigating the 'New Silk Road', what captures your interest?", choices: [ { text: "Fiscal modeling of debt-sustainability in host countries.", cat: "quant" }, { text: "Comparing modern state rhetoric to Tang Dynasty narratives.", cat: "gcs" }, { text: "Researching 19th-century archives of trade and power.", cat: "hist" }, { text: "Travelogues and novels written by those moving along the route.", cat: "lit" } ] },
-        { s: "Defining 'Justice' in a global forum. How do you start?", choices: [ { text: "By measuring wealth distribution and equity indices.", cat: "quant" }, { text: "Debating first principles and the 'veil of ignorance'.", cat: "phil" }, { text: "Studying how justice was defined in the Song and Ming eras.", cat: "gcs" }, { text: "Exploring 'Divine Law' and 'Karma' in world religions.", cat: "rel" } ] },
-        { s: "An ancient city is found underwater. What is the priority?", choices: [ { text: "Using LIDAR and carbon dating to categorize artifacts.", cat: "quant" }, { text: "Reconstructing daily lives through letters and records.", cat: "hist" }, { text: "Asking what collapse tells us about human vanity.", cat: "phil" }, { text: "Deciphering temple inscriptions for lost belief systems.", cat: "rel" } ] },
-        { s: "AI mimics human empathy perfectly. What is the key question?", choices: [ { text: "The statistical likelihood of passing a Turing Test.", cat: "quant" }, { text: "How this shifts our definition of 'The Person'.", cat: "phil" }, { text: "How this changes narratives of 'The Human' in literature.", cat: "lit" }, { text: "Whether AI can ever possess a 'Sacred Soul'.", cat: "rel" } ] },
-        { s: "A global pandemic shifts society. How do you document it?", choices: [ { text: "Mapping R-naught values and socio-economic labor impact.", cat: "quant" }, { text: "A history of how past plagues transformed state power.", cat: "hist" }, { text: "Collecting personal stories to create a 'mosaic of the spirit'.", cat: "lit" }, { text: "How the TCM debate reflects modern Chinese identity.", cat: "gcs" } ] },
-        { s: "Studying the decline of marriage. What is your method?", choices: [ { text: "Regression analysis of marriage rates vs. education levels.", cat: "quant" }, { text: "The evolution of 'Filial Piety' in classic Chinese texts.", cat: "gcs" }, { text: "Analyzing shifting metaphors for 'Family' in modern novels.", cat: "lit" }, { text: "Investigating rituals of union in religious institutions.", cat: "rel" } ] },
-        { s: "Climate change is accelerating. What do we need most?", choices: [ { text: "Better atmospheric models and carbon market logistics.", cat: "quant" }, { text: "A re-evaluation of 'Wu Wei' as environmental ethics.", cat: "rel" }, { text: "Historical study of civilizations that failed via climate.", cat: "hist" }, { text: "Philosophical inquiry into duties toward future generations.", cat: "phil" } ] },
-        { s: "A protest movement emerges. How do you understand it?", choices: [ { text: "Scraping social media to track network cluster analysis.", cat: "quant" }, { text: "Reading the movement's poetry for hidden meaning.", cat: "lit" }, { text: "Historical roots of civil disobedience in that region.", cat: "hist" }, { text: "Debating limits of state authority vs. individual liberty.", cat: "phil" } ] },
-        { s: "Viewing a 12th-century scroll. What grabs you?", choices: [ { text: "Chemical composition of ink and market price.", cat: "quant" }, { text: "Brushstrokes as visual language of psychological state.", cat: "lit" }, { text: "The Song Dynasty court context that commissioned it.", cat: "gcs" }, { text: "Landscape as representation of metaphysical ideas.", cat: "rel" } ] },
-        { s: "A small town is disappearing. How do you save its memory?", choices: [ { text: "Digitizing tax and property records into a database.", cat: "quant" }, { text: "Oral history project to capture voices of old residents.", cat: "hist" }, { text: "Analyzing the town's 'mythology' and sacred identity.", cat: "rel" }, { text: "How the town's unique dialect reflects its history.", cat: "lit" } ] },
-        { s: "Digital privacy is vanishing. What is the core issue?", choices: [ { text: "Data-encryption standards and cybersecurity indices.", cat: "quant" }, { text: "Philosophical debate on the 'Right to be Forgotten'.", cat: "phil" }, { text: "Historical surveillance methods in imperial governance.", cat: "gcs" }, { text: "Literary inquiry into the impact of 'Always Being Watched'.", cat: "lit" } ] },
-        { s: "Why do we feel 'Nostalgia' for the past?", choices: [ { text: "Evolutionary psychological study on brain patterns.", cat: "quant" }, { text: "Literary analysis of 'The Golden Age' trope.", cat: "lit" }, { text: "Historical investigation of nostalgia as a disease.", cat: "hist" }, { text: "Philosophical look at 'Time' and the present moment.", cat: "phil" } ] },
-        { s: "The moon is being colonized. What is the priority?", choices: [ { text: "Calculating oxygen production and mineral extraction.", cat: "quant" }, { text: "Establishing 'Cosmic Ethics' for new settlements.", cat: "phil" }, { text: "Asking how a sacred symbol is now desacralized.", cat: "rel" }, { text: "Drafting a history of humanity as a multi-planet species.", cat: "hist" } ] },
-        { s: "A billionaire buys a major newspaper. Why worry?", choices: [ { text: "Market consolidation and industry stock value change.", cat: "quant" }, { text: "The historical role of the Public Sphere in democracy.", cat: "hist" }, { text: "The power of narrative to shape 'bought' truths.", cat: "lit" }, { text: "Ethical responsibility of the Intellectual today.", cat: "phil" } ] },
-        { s: "The 'Great Wall'. What is its most important aspect?", choices: [ { text: "Structural engineering and logistical cost.", cat: "quant" }, { text: "Function as a border between 'Civilization' and 'Barbarism'.", cat: "gcs" }, { text: "Psychological impact as a metaphor in literature.", cat: "lit" }, { text: "Its relationship to the concept of the 'Sacred Center'.", cat: "rel" } ] },
-        { s: "Why is Shakespeare still read in China today?", choices: [ { text: "Statistical study on translation sales and trends.", cat: "quant" }, { text: "Analysis of universal archetypes in a Chinese context.", cat: "lit" }, { text: "History of his introduction into China in the 19th c.", cat: "gcs" }, { text: "Philosophical inquiry into the nature of tragedy.", cat: "phil" } ] },
-        { s: "A sentient robot asks for 'Rights'. How do you respond?", choices: [ { text: "Test sentience via mathematical neural mapping.", cat: "quant" }, { text: "Review historical precedents of expanding rights.", cat: "hist" }, { text: "Debate logical definition of 'Consciousness'.", cat: "phil" }, { text: "Ask if it has a 'Soul' and what creation means.", cat: "rel" } ] },
-        { s: "Studying the 'Silk Road' in a village. What do you look at?", choices: [ { text: "Trade volume and economic shift since the new road.", cat: "quant" }, { text: "Local folklore and legends survived from antiquity.", cat: "gcs" }, { text: "Religious architecture and how faiths left marks.", cat: "rel" }, { text: "History of local lineage and centuries of migration.", cat: "hist" } ] },
-        { s: "The world is ending. What is the last book you save?", choices: [ { text: "An encyclopedia of scientific and math knowledge.", cat: "quant" }, { text: "Greatest poems ever written about love and loss.", cat: "lit" }, { text: "Foundational religious texts of the great faiths.", cat: "rel" }, { text: "Philosophical treatise on facing death with reason.", cat: "phil" } ] },
-        { s: "A mega-city is being planned. What is the main design principle?", choices: [ { text: "Optimization of traffic flow and resource distribution data.", cat: "quant" }, { text: "Preservation of historical neighborhoods and heritage sites.", cat: "hist" }, { text: "The philosophical question of 'The Human Scale' in architecture.", cat: "phil" }, { text: "How the layout reflects traditional feng shui or cosmological order.", cat: "gcs" } ] },
-        { s: "Social media use is linked to mental health. How do you study it?", choices: [ { text: "Conducting a large-scale correlation study on screen time and cortisol.", cat: "quant" }, { text: "Analyzing the 'Self' as a digital performance in modern literature.", cat: "lit" }, { text: "Investigating the ethical implications of the attention economy.", cat: "phil" }, { text: "Comparing digital addiction to traditional concepts of 'Spirit Possession'.", cat: "rel" } ] },
-        { s: "The concept of 'Ancestry' is changing with DNA kits. Why does it matter?", choices: [ { text: "The accuracy and statistical bias of genetic ancestry algorithms.", cat: "quant" }, { text: "The history of how family trees were used to justify power.", cat: "hist" }, { text: "The literary theme of 'The Search for Roots' in migrant stories.", cat: "lit" }, { text: "The religious duty of honoring ancestors in a secular age.", cat: "rel" } ] },
-        { s: "A forest is declared 'Self-Owned' by a court. What is your reaction?", choices: [ { text: "Calculating the economic impact on the timber and carbon markets.", cat: "quant" }, { text: "Researching the history of 'Personhood' for non-human entities.", cat: "hist" }, { text: "Exploring the Daoist concept of 'Self-So-Ness' (Ziran).", cat: "gcs" }, { text: "Questioning the logical boundaries between 'Subject' and 'Object'.", cat: "phil" } ] },
-        { s: "A remote tribe sees a satellite for the first time. What is the story?", choices: [ { text: "The technical expansion of global telecommunications coverage.", cat: "quant" }, { text: "The narrative of the 'First Contact' as a literary archetype.", cat: "lit" }, { text: "The disruption of a sacred cosmology by modern technology.", cat: "rel" }, { text: "The history of colonialism through the lens of technology.", cat: "hist" } ] },
-        { s: "A global 'Universal Basic Income' is proposed. What is the primary lens?", choices: [ { text: "Fiscal feasibility and the impact on inflation and labor supply.", cat: "quant" }, { text: "The philosophical connection between 'Work' and 'Human Dignity'.", cat: "phil" }, { text: "The history of utopian experiments and why they failed or succeeded.", cat: "hist" }, { text: "How different religions define 'Charity' versus 'Justice'.", cat: "rel" } ] },
-        { s: "Education is moving into the Metaverse. What is the biggest loss?", choices: [ { text: "The quantifiable dip in standardized test scores.", cat: "quant" }, { text: "The historical loss of 'The Campus' as a space for civic discourse.", cat: "hist" }, { text: "The philosophical question: Can wisdom be taught without presence?", cat: "phil" }, { text: "The literary representation of 'The Virtual' vs 'The Real'.", cat: "lit" } ] },
-        { s: "Space mining will soon be a reality. What is the first law?", choices: [ { text: "A framework for property rights and mineral extraction quotas.", cat: "quant" }, { text: "The ethical question of humanity's 'Stewardship' over the void.", cat: "phil" }, { text: "The history of the 'Gold Rush' and its impact on indigenous lands.", cat: "hist" }, { text: "The religious interpretation of 'The Heavens' as common property.", cat: "rel" } ] },
-        { s: "Why do some stories become 'Classics' and others disappear?", choices: [ { text: "A data analysis of sales figures and circulation patterns.", cat: "quant" }, { text: "The literary mechanics of why certain tropes resonate.", cat: "lit" }, { text: "The history of 'The Canon' and the power structures that built it.", cat: "hist" }, { text: "How stories serve as 'Sacred Myths' for secular societies.", cat: "rel" } ] },
-        { s: "A new 'Global Language' is being created. What is your concern?", choices: [ { text: "The linguistic efficiency and speed of information transfer.", cat: "quant" }, { text: "The loss of unique worldviews embedded in local languages.", cat: "gcs" }, { text: "The philosophical link between language and the perception of truth.", cat: "phil" }, { text: "The history of 'Universal Languages' from Latin to Esperanto.", cat: "hist" } ] }
+    const questions = [
+        { s: "A developing nation faces hyper-inflation. Where do you start?", choices: [
+            { text: "Building stochastic models of price-level volatility and currency equilibrium.", cat: "qpe" },
+            { text: "Tracing how inflation historically collapsed social trust in that region's past.", cat: "hist" },
+            { text: "Interviewing citizens to write an ethnography of 'economic survival'.", cat: "anth" },
+            { text: "Analyzing how the state uses the language of 'Crisis' to reshape power.", cat: "ppe" }
+        ]},
+        { s: "You are investigating the 'New Silk Road'. Where does your curiosity lead?", choices: [
+            { text: "Modeling debt-trap risks using quantitative fiscal game theory.", cat: "qpe" },
+            { text: "Comparing the rhetoric to Tang Dynasty civilizational expansion myths.", cat: "gcs" },
+            { text: "Analyzing how the infrastructure changes the class structure of local villages.", cat: "soc" },
+            { text: "Studying the travelogues of those living along the modern route.", cat: "lit" }
+        ]},
+        { s: "How should a global society define 'Justice'?", choices: [
+            { text: "Calculating the Gini coefficient and social-welfare utility functions.", cat: "qpe" },
+            { text: "Debating the first principles of fairness and the 'veil of ignorance'.", cat: "relphil" },
+            { text: "Studying how justice was historically codified across Chinese dynasties.", cat: "gcs" },
+            { text: "Analyzing the trade-offs between individual liberty and state planning.", cat: "ppe" }
+        ]},
+        { s: "An ancient city is discovered underwater. What is the priority?", choices: [
+            { text: "Analyzing the resource-exhaustion data that led to the city's collapse.", cat: "qpe" },
+            { text: "Reconstructing the emotional lives of citizens through their letters.", cat: "hist" },
+            { text: "Deciphering temple inscriptions for lost cosmological beliefs.", cat: "relphil" },
+            { text: "Decoding the symbols and art to find the city's cultural values.", cat: "anth" }
+        ]},
+        { s: "AI begins to mimic human empathy. What is the most pressing question?", choices: [
+            { text: "The impact on labor-market efficiency and productivity metrics.", cat: "qpe" },
+            { text: "How this shifts our philosophical definition of 'The Person'.", cat: "relphil" },
+            { text: "How this will change the narratives of 'The Human' in literature.", cat: "lit" },
+            { text: "The regulatory and legal frameworks needed to govern sentient algorithms.", cat: "ppe" }
+        ]},
+        { s: "A global pandemic shifts society. How do you document it?", choices: [
+            { text: "Mapping epidemiological spread and vaccination uptake with multivariate data.", cat: "qpe" },
+            { text: "Writing a history of how past plagues transformed the nature of state power.", cat: "hist" },
+            { text: "Observing how people 'perform' safety and ritual in their daily lives.", cat: "anth" },
+            { text: "Exploring how the pandemic debate reflects modern Chinese identity.", cat: "gcs" }
+        ]},
+        { s: "Marriage rates are declining globally. What is the best study?", choices: [
+            { text: "Running regressions on fertility rates versus income and interest rates.", cat: "qpe" },
+            { text: "Examining how family structures shift under global capitalist systems.", cat: "soc" },
+            { text: "Analyzing the shifting metaphors for 'Family' in contemporary novels.", cat: "lit" },
+            { text: "Investigating the evolution of 'Filial Piety' in Chinese texts.", cat: "gcs" }
+        ]},
+        { s: "The climate is changing rapidly. What do we need most?", choices: [
+            { text: "Better atmospheric models and a more efficient global carbon market.", cat: "qpe" },
+            { text: "A re-evaluation of 'Wu Wei' as a model for environmental ethics.", cat: "relphil" },
+            { text: "A study of how indigenous cultures adapt their rituals to the change.", cat: "anth" },
+            { text: "The political economy of green energy and global carbon policy.", cat: "ppe" }
+        ]},
+        { s: "A new protest movement emerges. How do you understand it?", choices: [
+            { text: "Using network analysis to track the spread of dissent and mobilization.", cat: "qpe" },
+            { text: "Reading the movement's poetry and manifestos for hidden meaning.", cat: "lit" },
+            { text: "Analyzing how group identity and social solidarity are formed in the crowd.", cat: "soc" },
+            { text: "Debating the ethical limits of state authority versus liberty.", cat: "relphil" }
+        ]},
+        { s: "Looking at a 12th-century scroll. What captures you?", choices: [
+            { text: "The market price trends of ancient art in the global investment sector.", cat: "qpe" },
+            { text: "The brushstrokes as a visual language of a psychological state.", cat: "lit" },
+            { text: "The political context of the Song court that commissioned the art.", cat: "gcs" },
+            { text: "How the scroll functioned in the social life of the elite at the time.", cat: "hist" }
+        ]},
+        { s: "A village is disappearing. How do you save its memory?", choices: [
+            { text: "Digitizing all economic, property, and tax data for future researchers.", cat: "qpe" },
+            { text: "Writing a 'thick description' of the village's unique kinship systems.", cat: "anth" },
+            { text: "Analyzing the village's 'mythology' and how it defined its identity.", cat: "relphil" },
+            { text: "Investigating how the local dialect reflects the village's history.", cat: "lit" }
+        ]},
+        { s: "What is the future of 'Privacy' in the digital age?", choices: [
+            { text: "The trade-off between surveillance efficiency and consumer data value.", cat: "qpe" },
+            { text: "A philosophical debate on the 'Right to be Forgotten' as a human right.", cat: "relphil" },
+            { text: "A study of how surveillance functioned in Chinese governance history.", cat: "gcs" },
+            { text: "How the concept of 'the public' is socially and culturally constructed.", cat: "soc" }
+        ]},
+        { s: "Why do we feel 'Nostalgia' for eras we never experienced?", choices: [
+            { text: "Analyzing the market for 'retro' products using demand-elasticity data.", cat: "qpe" },
+            { text: "A literary analysis of 'The Golden Age' trope across cultures.", cat: "lit" },
+            { text: "A historical investigation of nostalgia first diagnosed as a disease.", cat: "hist" },
+            { text: "A study of how 'Retro-branding' fuels consumer identity in society.", cat: "soc" }
+        ]},
+        { s: "The moon is being colonized. What is the priority?", choices: [
+            { text: "Estimating the cost-per-ton of mineral extraction and transport logistics.", cat: "qpe" },
+            { text: "Establishing a set of 'Cosmic Ethics' for new settlements.", cat: "relphil" },
+            { text: "Studying how humans adapt their culture to a non-Earth environment.", cat: "anth" },
+            { text: "Drafting the social contract and legal constitutions for moon life.", cat: "ppe" }
+        ]},
+        { s: "A billionaire buys a major newspaper. What is the worry?", choices: [
+            { text: "The impact on advertising market share and media consolidation data.", cat: "qpe" },
+            { text: "The historical role of the 'Public Sphere' in maintaining democracy.", cat: "hist" },
+            { text: "The power of narrative to shape truth and 'bought' stories.", cat: "lit" },
+            { text: "How this ownership shifts the social perception of 'truth'.", cat: "soc" }
+        ]},
+        { s: "The 'Great Wall'. What is its most important aspect?", choices: [
+            { text: "The engineering logistics and the labor-cost of its construction.", cat: "qpe" },
+            { text: "Its function as a border between 'Civilization' and 'Barbarism'.", cat: "gcs" },
+            { text: "The psychological impact as a metaphor in literature.", cat: "lit" },
+            { text: "The social organization of the labor and tax systems that built it.", cat: "soc" }
+        ]},
+        { s: "Why is Shakespeare still read in China today?", choices: [
+            { text: "A statistical study on translation sales and curriculum trends.", cat: "qpe" },
+            { text: "A literary analysis of universal archetypes in a Chinese context.", cat: "lit" },
+            { text: "The history of how Shakespeare was 'imported' during the late Qing.", cat: "gcs" },
+            { text: "An ethnographic study of Chinese fans and their theater rituals.", cat: "anth" }
+        ]},
+        { s: "A robot asks for 'Rights'. How do you respond?", choices: [
+            { text: "Determine the economic liability of granting machines personhood.", cat: "qpe" },
+            { text: "Review the historical precedents of how 'Rights' were expanded.", cat: "hist" },
+            { text: "Debate the logical definition of 'Consciousness' and 'Moral Agency'.", cat: "relphil" },
+            { text: "Observe how humans begin to socially treat the robot as a 'person'.", cat: "anth" }
+        ]},
+        { s: "Studying the 'Silk Road' in a local village. What do you look at?", choices: [
+            { text: "The current trade volume and the local economic shift since the road.", cat: "qpe" },
+            { text: "The local folklore and legends survived from antiquity.", cat: "gcs" },
+            { text: "The religious architecture and how faiths left marks.", cat: "relphil" },
+            { text: "The institutional changes in local governance over centuries.", cat: "ppe" }
+        ]},
+        { s: "The world is ending tomorrow. What is the last thing you do?", choices: [
+            { text: "Backup the world's mathematical and scientific data onto a hard drive.", cat: "qpe" },
+            { text: "Gather your community for a final collective ritual of mourning.", cat: "relphil" },
+            { text: "Write down the story of your life for any who may find it.", cat: "lit" },
+            { text: "Observe and record how different cultures react to the end.", cat: "anth" }
+        ]}
     ];
 
-    let scores = { quant: 0, hist: 0, lit: 0, gcs: 0, phil: 0, rel: 0 };
-    let activeQuestions = [];
+    let scores = { qpe: 0, hist: 0, lit: 0, gcs: 0, relphil: 0, ppe: 0, soc: 0, anth: 0 };
     let currentIdx = 0;
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    function initGame() {
-        activeQuestions = shuffle([...repo]).slice(0, 15);
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        const quizArea = document.getElementById('quiz-area');
-        const s = activeQuestions[currentIdx];
-        const shuffledChoices = shuffle([...s.choices]);
-        quizArea.innerHTML = `<div class="scenario-text">${s.s}</div>` + 
-            shuffledChoices.map(c => `<button class="choice-btn" onclick="tally('${c.cat}')">${c.text}</button>`).join('');
-        document.getElementById('q-num').innerText = currentIdx + 1;
-        document.getElementById('progress').style.width = `${((currentIdx) / 15) * 100}%`;
-    }
 
     function tally(cat) {
         scores[cat]++;
         currentIdx++;
-        if (currentIdx < 15) { renderQuestion(); } else { showResults(); }
+        if (currentIdx < questions.length) { render(); } 
+        else { showResults(); }
+    }
+
+    function render() {
+        document.getElementById('q-idx').innerText = currentIdx + 1;
+        document.getElementById('progress').style.width = `${(currentIdx / 20) * 100}%`;
+        const q = questions[currentIdx];
+        document.getElementById('scenario-text').innerText = q.s;
+        const grid = document.getElementById('options-grid');
+        grid.innerHTML = '';
+        q.choices.forEach((c, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span>0${i+1}</span> ${c.text}`;
+            btn.onclick = () => tally(c.cat);
+            grid.appendChild(btn);
+        });
     }
 
     function showResults() {
-        document.getElementById('quiz-area').style.display = 'none';
-        document.getElementById('results').style.display = 'block';
-        document.getElementById('progress').style.width = '100%';
-        const detail = document.getElementById('result-detail');
-        const {quant, ...humanities} = scores;
-        const sorted = Object.entries(humanities).sort((a,b) => b[1] - a[1]);
-        const topHum = sorted[0][0];
+        document.getElementById('quiz-screen').style.display = 'none';
+        const res = document.getElementById('results-screen');
+        res.style.display = 'block';
         
-        const contentMap = {
-            hist: { m: "History", d: "You are an explorer of continuity and change. You value archives and narratives over abstract mathematical formulas." },
-            lit: { m: "Literature", d: "You are a seeker of meaning. You believe metaphors and interiority reveal the deepest truths of the human condition." },
-            gcs: { m: "Global China Studies", d: "You are a civilizational thinker. You value the 'Total History' of China as a primary lens for understanding the global future." },
-            phil: { m: "Philosophy", d: "You are an architect of thought. You seek the first principles of logic, ethics, and justice." },
-            rel: { m: "Religious Studies", d: "You are an investigator of the sacred. You study the myths and rituals that drive deep human motivations." }
+        const sorted = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+        const top = sorted[0][0];
+
+        const meta = {
+            qpe: ["The Systems Strategist (QPE)", "You seek universal laws through data, modeling, and empirical measurement. You want to understand the mechanics of the global machine."],
+            hist: ["The Temporal Detective (History)", "You value archives and the passage of time. You believe the present can only be understood by tracing the contingencies of the past."],
+            lit: ["The Interpreter (Literature)", "You seek meaning in the word. You believe metaphors and narratives reveal the deepest truths of the human psyche."],
+            gcs: ["The Civilizational Bridge (GCS)", "You value the rooted context of China. You see its history and philosophy as the vital lens for the global future."],
+            relphil: ["The Sage (Religion & Philosophy)", "You pursue first principles and the 'Ultimate'. You seek the ethical frameworks that drive human action."],
+            ppe: ["The Institutionalist (PPE)", "You are a structural thinker, interested in the social contract and the intersection of power and policy."],
+            soc: ["The Structuralist (Sociology)", "You seek the systemic forces—class, institutions, and structures—that shape the collective human experience."],
+            anth: ["The Ethnographer (Anthropology)", "You value 'thick description' and lived experience. You seek to understand the world through the symbols of the individual."]
         };
 
-        const result = scores.quant > 10 ? { m: "Quantitative Social Science", d: "You prefer universal laws and empirical data as your primary mode of inquiry." } : contentMap[topHum];
-
-        detail.innerHTML = `<h3>Match: ${result.m}</h3><p>${result.d}</p>
-            <div class="score-summary">
-                <div>History: ${scores.hist}</div><div>Lit: ${scores.lit}</div><div>China St: ${scores.gcs}</div>
-                <div>Phil: ${scores.phil}</div><div>Religion: ${scores.rel}</div><div>Quant: ${scores.quant}</div>
-            </div>`;
+        document.getElementById('major-match').innerText = meta[top][0];
+        document.getElementById('major-desc').innerText = meta[top][1];
+        
+        const breakdown = document.getElementById('score-breakdown');
+        Object.entries(scores).forEach(([k, v]) => {
+            const div = document.createElement('div');
+            div.className = 'score-item';
+            div.innerText = `${k.toUpperCase()}: ${v}`;
+            breakdown.appendChild(div);
+        });
     }
-    initGame();
+
+    render();
 </script>
+
 </body>
 </html>
