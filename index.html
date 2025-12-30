@@ -3,95 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Human Lens | DKU Major Diagnostic</title>
+    <title>The Human Lens | DKU Research Diagnostic</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dku-blue: #003087;
-            --dku-gold: #E2AD35;
-            --text-main: #1a1a1a;
-            --text-sub: #4b5563;
-            --bg-light: #f9fafb;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        #app-container {
-            background: var(--white);
-            width: 100%;
-            max-width: 800px;
-            margin: 20px;
-            padding: 50px;
-            border-radius: 2px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border-top: 6px solid var(--dku-blue);
-        }
-
+        :root { --dku-blue: #003087; --dku-gold: #E2AD35; --text-main: #1a1a1a; --text-sub: #4b5563; --bg-light: #f9fafb; --white: #ffffff; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        #app-container { background: var(--white); width: 100%; max-width: 800px; margin: 20px; padding: 50px; border-radius: 2px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid var(--dku-blue); }
         header { text-align: center; margin-bottom: 40px; }
         h1 { font-family: 'Crimson Pro', serif; font-size: 2.2rem; margin: 0; color: var(--dku-blue); }
-        .tagline { font-size: 0.9rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
-
+        .tagline { font-size: 0.85rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; font-weight: 600; }
         .progress-wrapper { margin-bottom: 30px; }
         .progress-text { font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; color: var(--dku-blue); }
         .progress-bar { height: 2px; background: #e5e7eb; position: relative; }
         .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.4s ease; }
-
-        .scenario-box { min-height: 100px; margin-bottom: 30px; }
+        .scenario-box { min-height: 120px; margin-bottom: 30px; }
         .scenario-text { font-family: 'Crimson Pro', serif; font-size: 1.4rem; line-height: 1.4; color: #111; font-weight: 600; }
-
         .options-grid { display: flex; flex-direction: column; gap: 12px; }
-        .option-btn {
-            background: var(--white);
-            border: 1px solid #d1d5db;
-            padding: 16px 20px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            border-radius: 4px;
-        }
+        .option-btn { background: var(--white); border: 1px solid #d1d5db; padding: 16px 20px; text-align: left; cursor: pointer; font-size: 0.95rem; transition: all 0.2s ease; display: flex; align-items: center; border-radius: 4px; }
         .option-btn:hover { border-color: var(--dku-blue); background: #f0f4ff; }
         .option-btn span { font-weight: 600; color: var(--dku-blue); margin-right: 15px; font-size: 0.8rem; }
-
         #results-screen { display: none; }
         .result-title { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--dku-blue); margin-bottom: 15px; }
         .result-desc { line-height: 1.6; color: var(--text-sub); margin-bottom: 25px; font-size: 1.1rem; }
-        
-        .score-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 15px; 
-            background: #f3f4f6; 
-            padding: 20px; 
-            border-radius: 4px;
-        }
-        .score-item { font-size: 0.8rem; font-weight: 600; color: var(--text-sub); }
-
-        .restart-btn { 
-            margin-top: 30px; 
-            background: var(--dku-blue); 
-            color: white; 
-            border: none; 
-            padding: 15px 30px; 
-            cursor: pointer; 
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-        }
-
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; background: #f3f4f6; padding: 20px; border-radius: 4px; }
+        .score-item { font-size: 0.75rem; font-weight: 600; color: var(--text-sub); }
+        .restart-btn { margin-top: 30px; background: var(--dku-blue); color: white; border: none; padding: 15px 30px; cursor: pointer; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; width: 100%; border-radius: 4px; }
         @media (max-width: 600px) { #app-container { padding: 25px; } }
     </style>
 </head>
@@ -100,17 +36,15 @@
 <div id="app-container">
     <header>
         <h1>The Human Lens</h1>
-        <div class="tagline">Major Diagnostic Tool</div>
+        <div class="tagline">Research Methodology Diagnostic</div>
     </header>
 
     <div id="quiz-screen">
         <div class="progress-wrapper">
-            <div class="progress-text">Inquiry <span id="q-idx">1</span> / 20</div>
+            <div class="progress-text">Inquiry <span id="q-idx">1</span> / 15</div>
             <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
         </div>
-        <div class="scenario-box">
-            <div id="scenario-text" class="scenario-text"></div>
-        </div>
+        <div class="scenario-box"><div id="scenario-text" class="scenario-text"></div></div>
         <div id="options-grid" class="options-grid"></div>
     </div>
 
@@ -118,12 +52,12 @@
         <div class="result-title" id="major-match"></div>
         <p class="result-desc" id="major-desc"></p>
         <div class="score-grid" id="score-breakdown"></div>
-        <button class="restart-btn" onclick="location.reload()">Reset Diagnostic</button>
+        <button class="restart-btn" onclick="location.reload()">Start New Random Inquiry</button>
     </div>
 </div>
 
 <script>
-    const questions = [
+    const allQuestions = [
         { s: "A developing nation faces hyper-inflation. Where do you start?", choices: [
             { text: "Building stochastic models of price-level volatility and currency equilibrium.", cat: "qpe" },
             { text: "Tracing how inflation historically collapsed social trust in that region's past.", cat: "hist" },
@@ -144,7 +78,7 @@
         ]},
         { s: "An ancient city is discovered underwater. What is the priority?", choices: [
             { text: "Analyzing the resource-exhaustion data that led to the city's collapse.", cat: "qpe" },
-            { text: "Reconstructing the emotional lives of citizens through their letters.", cat: "hist" },
+            { text: "Reconstructing the emotional lives of citizens through their remaining letters.", cat: "hist" },
             { text: "Deciphering temple inscriptions for lost cosmological beliefs.", cat: "relphil" },
             { text: "Decoding the symbols and art to find the city's cultural values.", cat: "anth" }
         ]},
@@ -243,8 +177,72 @@
             { text: "Gather your community for a final collective ritual of mourning.", cat: "relphil" },
             { text: "Write down the story of your life for any who may find it.", cat: "lit" },
             { text: "Observe and record how different cultures react to the end.", cat: "anth" }
+        ]},
+        { s: "A new language is discovered in a remote valley. What is the task?", choices: [
+            { text: "Digitally mapping the syntax to find mathematical linguistic universals.", cat: "qpe" },
+            { text: "Studying how the language shapes the community's unique view of time.", cat: "anth" },
+            { text: "Translating their sacred texts to find echoes of ancient world religions.", cat: "relphil" },
+            { text: "Analyzing how the language was used to resist historical colonization.", cat: "hist" }
+        ]},
+        { s: "A historic library is burning. What do you save first?", choices: [
+            { text: "The technical manuals on agricultural engineering and public health.", cat: "qpe" },
+            { text: "The only copy of an epic poem that defines a culture's identity.", cat: "lit" },
+            { text: "The secret diaries of a 16th-century court physician.", cat: "hist" },
+            { text: "The philosophical scrolls debating the nature of the afterlife.", cat: "relphil" }
+        ]},
+        { s: "Investigating the 'Metaverse'. Where is the impact?", choices: [
+            { text: "The growth potential of the virtual real-estate market and digital GDP.", cat: "qpe" },
+            { text: "How virtual existence challenges our ethical definitions of 'Suffering'.", cat: "relphil" },
+            { text: "The way social inequalities and class hierarchies are mirrored in VR.", cat: "soc" },
+            { text: "The historical evolution of 'Virtual' spaces in theater and fiction.", cat: "lit" }
+        ]},
+        { s: "A famine strikes a region. How do you analyze the cause?", choices: [
+            { text: "Modeling the failure of crop yields against global trade embargoes.", cat: "qpe" },
+            { text: "Investigating the political-economic failure of the local institutions.", cat: "ppe" },
+            { text: "Studying how the famine was recorded in the literature of the era.", cat: "lit" },
+            { text: "Analyzing the history of state grain-management systems in the region.", cat: "gcs" }
+        ]},
+        { s: "Why are some cities more creative than others?", choices: [
+            { text: "Measuring the density of intellectual property filings and venture capital.", cat: "qpe" },
+            { text: "Studying the social networks and institutions that foster collaboration.", cat: "soc" },
+            { text: "Analyzing the history of the city as a cross-cultural trading hub.", cat: "hist" },
+            { text: "An ethnographic study of the city's street-art and subculture scenes.", cat: "anth" }
+        ]},
+        { s: "How do we decide what is 'Beautiful'?", choices: [
+            { text: "Measuring brain-wave responses to Golden Ratio proportions in art.", cat: "qpe" },
+            { text: "Analyzing how 'Beauty' is a social construct used to signify class.", cat: "soc" },
+            { text: "Reading philosophical debates on Aesthetics and the 'Universal Sublime'.", cat: "relphil" },
+            { text: "Studying how the concept of 'Shan' (the good/beautiful) evolved in China.", cat: "gcs" }
+        ]},
+        { s: "A new border is drawn between two nations. What is the effect?", choices: [
+            { text: "Predicting the shift in cross-border trade and labor migration costs.", cat: "qpe" },
+            { text: "Investigating how the border splits families and shared cultural rituals.", cat: "anth" },
+            { text: "Analyzing the political-economic tensions between sovereignty and flow.", cat: "ppe" },
+            { text: "Researching the history of the borderland as a site of shared identity.", cat: "hist" }
+        ]},
+        { s: "What is the role of 'Sacrifice' in modern society?", choices: [
+            { text: "Modeling the 'Sunk Cost Fallacy' in modern human decision-making.", cat: "qpe" },
+            { text: "Studying the religious roots of sacrifice and its role in modern ritual.", cat: "relphil" },
+            { text: "Analyzing how soldiers are socialized to 'sacrifice' for the state.", cat: "soc" },
+            { text: "Exploring the trope of the 'Heroic Sacrifice' in world literature.", cat: "lit" }
+        ]},
+        { s: "Why did the 'Qing Dynasty' fall?", choices: [
+            { text: "Analyzing the silver-flow data and the data on tax-revenue collapse.", cat: "qpe" },
+            { text: "Studying the internal intellectual debates on reform and revolution.", cat: "gcs" },
+            { text: "Researching the external colonial archives and diplomatic pressure.", cat: "hist" },
+            { text: "Analyzing the literature of the 'May Fourth' movement that followed.", cat: "lit" }
+        ]},
+        { s: "How will humanity look in 1,000 years?", choices: [
+            { text: "Projecting demographic shifts and resource availability models.", cat: "qpe" },
+            { text: "Writing a speculative 'History of the Future' based on current trends.", cat: "hist" },
+            { text: "Philosophizing on whether 'Post-Humanism' is ethically desirable.", cat: "relphil" },
+            { text: "Analyzing how sci-fi literature serves as a social critique of the now.", cat: "lit" }
         ]}
     ];
+
+    // Randomize and slice to 15
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    const questions = shuffled.slice(0, 15);
 
     let scores = { qpe: 0, hist: 0, lit: 0, gcs: 0, relphil: 0, ppe: 0, soc: 0, anth: 0 };
     let currentIdx = 0;
@@ -258,7 +256,7 @@
 
     function render() {
         document.getElementById('q-idx').innerText = currentIdx + 1;
-        document.getElementById('progress').style.width = `${(currentIdx / 20) * 100}%`;
+        document.getElementById('progress').style.width = `${(currentIdx / 15) * 100}%`;
         const q = questions[currentIdx];
         document.getElementById('scenario-text').innerText = q.s;
         const grid = document.getElementById('options-grid');
@@ -281,14 +279,14 @@
         const top = sorted[0][0];
 
         const meta = {
-            qpe: ["The Systems Strategist (QPE)", "You seek universal laws through data, modeling, and empirical measurement. You want to understand the mechanics of the global machine."],
+            qpe: ["The Systems Strategist (QPE)", "You seek universal laws through multivariate data, fiscal modeling, and empirical measurement. You want to understand the mechanics of the global machine."],
             hist: ["The Temporal Detective (History)", "You value archives and the passage of time. You believe the present can only be understood by tracing the contingencies of the past."],
             lit: ["The Interpreter (Literature)", "You seek meaning in the word. You believe metaphors and narratives reveal the deepest truths of the human psyche."],
             gcs: ["The Civilizational Bridge (GCS)", "You value the rooted context of China. You see its history and philosophy as the vital lens for the global future."],
-            relphil: ["The Sage (Religion & Philosophy)", "You pursue first principles and the 'Ultimate'. You seek the ethical frameworks that drive human action."],
-            ppe: ["The Institutionalist (PPE)", "You are a structural thinker, interested in the social contract and the intersection of power and policy."],
-            soc: ["The Structuralist (Sociology)", "You seek the systemic forces—class, institutions, and structures—that shape the collective human experience."],
-            anth: ["The Ethnographer (Anthropology)", "You value 'thick description' and lived experience. You seek to understand the world through the symbols of the individual."]
+            relphil: ["The Sage (Religion & Philosophy)", "You pursue first principles and the 'Ultimate'. You seek the ethical frameworks and ritual structures that drive human action."],
+            ppe: ["The Institutionalist (PPE)", "You are a structural thinker, interested in the social contract and the intersection of power, ethics, and policy."],
+            soc: ["The Structuralist (Sociology)", "You seek the systemic forces—class, institutions, and social structures—that shape the collective human experience."],
+            anth: ["The Ethnographer (Anthropology)", "You value 'thick description' and lived experience. You seek to understand the world through the symbols and rituals of the individual."]
         };
 
         document.getElementById('major-match').innerText = meta[top][0];
