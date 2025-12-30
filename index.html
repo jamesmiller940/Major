@@ -6,459 +6,172 @@
     <title>The Human Lens | DKU Research Diagnostic</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dku-blue: #003087;
-            --dku-gold: #E2AD35;
-            --text-main: #111111;
-            --text-sub: #4b5563;
-            --bg-light: #fdfdfd;
-            --white: #ffffff;
-            --border: #e5e7eb;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        #app-container {
-            background: var(--white);
-            width: 100%;
-            max-width: 850px;
-            margin: 20px;
-            padding: 60px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
-            border-top: 8px solid var(--dku-blue);
-        }
-
-        header { text-align: center; margin-bottom: 50px; }
-        h1 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; margin: 0; color: var(--dku-blue); letter-spacing: -0.5px; }
-        .tagline { font-size: 0.8rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 3px; margin-top: 12px; font-weight: 600; }
-
-        .progress-wrapper { margin-bottom: 40px; }
-        .progress-text { font-size: 0.75rem; font-weight: 700; margin-bottom: 10px; color: var(--dku-blue); text-transform: uppercase; }
-        .progress-bar { height: 2px; background: #eee; position: relative; }
-        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.4s ease; }
-
-        .scenario-box { min-height: 150px; margin-bottom: 35px; }
-        .scenario-text { font-family: 'Crimson Pro', serif; font-size: 1.6rem; line-height: 1.4; color: #000; font-weight: 600; }
-
+        :root { --dku-blue: #003087; --dku-gold: #E2AD35; --bg: #fdfdfd; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        #app-container { background: white; width: 100%; max-width: 900px; padding: 60px; border: 1px solid #e5e7eb; border-top: 8px solid var(--dku-blue); box-shadow: 0 4px 30px rgba(0,0,0,0.02); }
+        h1 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; color: var(--dku-blue); text-align: center; margin: 0; }
+        .tagline { text-align: center; font-size: 0.8rem; letter-spacing: 3px; color: #4b5563; text-transform: uppercase; margin: 12px 0 40px; }
+        .content-section { line-height: 1.7; color: #333; font-size: 1.05rem; }
+        .content-section h2 { font-family: 'Crimson Pro', serif; color: var(--dku-blue); margin-top: 30px; }
+        .progress-bar { height: 2px; background: #eee; margin-bottom: 40px; position: relative; }
+        .progress-fill { height: 100%; background: var(--dku-gold); width: 0%; transition: width 0.4s; }
+        .scenario-text { font-family: 'Crimson Pro', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 35px; line-height: 1.5; color: #111; }
         .options-grid { display: flex; flex-direction: column; gap: 14px; }
-        .option-btn {
-            background: var(--white);
-            border: 1px solid var(--border);
-            padding: 20px 25px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
+        .option-btn { background: white; border: 1px solid #e5e7eb; padding: 22px; text-align: left; cursor: pointer; font-size: 1rem; display: flex; align-items: flex-start; transition: 0.2s; line-height: 1.5; }
         .option-btn:hover { border-color: var(--dku-blue); background: #f9fbff; }
-        .option-btn span { font-weight: 700; color: var(--dku-blue); margin-right: 20px; font-size: 0.8rem; border-right: 1px solid #ddd; padding-right: 15px; min-width: 30px; }
-
-        #results-screen { display: none; }
-        .result-title { font-family: 'Crimson Pro', serif; font-size: 2.4rem; color: var(--dku-blue); margin-bottom: 15px; }
-        .result-desc { line-height: 1.7; color: var(--text-sub); margin-bottom: 40px; font-size: 1.2rem; }
-        
-        .score-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 15px; 
-            border-top: 1px solid #eee; 
-            padding-top: 30px; 
-        }
-        .score-item { font-size: 0.75rem; font-weight: 700; color: var(--dku-blue); letter-spacing: 1px; }
-
-        .restart-btn { 
-            margin-top: 40px; 
-            background: var(--dku-blue); 
-            color: white; 
-            border: none; 
-            padding: 20px; 
-            cursor: pointer; 
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            width: 100%;
-            transition: background 0.2s;
-        }
-        .restart-btn:hover { background: #002366; }
-
-        @media (max-width: 600px) { #app-container { padding: 30px; } }
+        .option-btn span { font-weight: 700; color: var(--dku-blue); border-right: 1px solid #ddd; padding-right: 15px; margin-right: 20px; min-width: 35px; }
+        .screen { display: none; }
+        .active { display: block; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        .score-item { font-size: 0.75rem; font-weight: 700; color: var(--dku-blue); }
+        .action-btn { width: 100%; background: var(--dku-blue); color: white; border: none; padding: 20px; font-weight: 700; cursor: pointer; margin-top: 40px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <header>
-        <h1>THE HUMAN LENS</h1>
-        <div class="tagline">Research Methodology Diagnostic</div>
-    </header>
+    <header><h1>THE HUMAN LENS</h1><div class="tagline">Methodological Diagnostic</div></header>
 
-    <div id="quiz-screen">
-        <div class="progress-wrapper">
-            <div class="progress-text">Inquiry <span id="q-idx">1</span> / 15</div>
-            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div id="start-screen" class="screen active">
+        <div class="content-section">
+            <h2>The Architecture of Inquiry</h2>
+            <p>Choosing a major is often framed as a vocational pipeline. However, at Duke Kunshan, we view a major as a <strong>mode of inquiry</strong>—a specialized lens through which you learn to decompose complexity and analyze evidence.</p>
+            <p>This tool identifies the underlying intellectual architecture of your mind. It does not measure what you want to "be," but rather <strong>how you naturally prefer to solve an unsolved problem.</strong></p>
+            <p>You will be presented with 15 randomized research scenarios. For each, identify the methodological approach that resonates most deeply with your curiosity.</p>
         </div>
-        <div class="scenario-box">
-            <div id="scenario-text" class="scenario-text"></div>
-        </div>
-        <div id="options-grid" class="options-grid"></div>
+        <button class="action-btn" onclick="startQuiz()">Begin Inquiry</button>
     </div>
 
-    <div id="results-screen">
-        <div class="result-title" id="major-match"></div>
-        <p class="result-desc" id="major-desc"></p>
+    <div id="quiz-screen" class="screen">
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div class="scenario-text" id="scenario-text"></div>
+        <div class="options-grid" id="options-grid"></div>
+    </div>
+
+    <div id="results-screen" class="screen">
+        <h2 id="major-match" style="font-family: 'Crimson Pro'; font-size: 2.2rem; color: var(--dku-blue); margin-bottom: 10px;"></h2>
+        <p id="major-desc" style="line-height: 1.7; font-size: 1.1rem; color: #4b5563; margin-bottom: 30px;"></p>
+        
+        <div class="content-section" style="background: #f9f9f9; padding: 25px; border-radius: 4px;">
+            <h3>Method over Major</h3>
+            <p>Your results represent your preferred unit of analysis. Careers are built on <em>how</em> you think; masters of a specific methodology are more prepared for a global landscape than those who have merely memorized facts.</p>
+        </div>
+
         <div class="score-grid" id="score-breakdown"></div>
-        <button class="restart-btn" onclick="location.reload()">Generate New Inquiry</button>
+        <button class="action-btn" onclick="location.reload()">Reset and Re-Inquire</button>
     </div>
 </div>
 
 <script>
-    const allQuestions = [
-        { s: "A developing nation faces hyper-inflation. Where do you start?", choices: [
-            { text: "Building stochastic models of price-level volatility and currency equilibrium.", cat: "qpe" },
-            { text: "Tracing how inflation historically collapsed social trust in that region's past.", cat: "hist" },
-            { text: "Interviewing citizens to write an ethnography of 'economic survival'.", cat: "anth" },
-            { text: "Analyzing how the state uses the language of 'Crisis' to reshape power.", cat: "ppe" }
-        ]},
-        { s: "The 'New Silk Road' reshaping global trade. Where does your curiosity lead?", choices: [
-            { text: "Modeling debt-trap risks using quantitative fiscal game theory.", cat: "qpe" },
-            { text: "Comparing modern state rhetoric to Tang Dynasty civilizational myths.", cat: "gcs" },
-            { text: "Analyzing how the infrastructure changes the class structure of local villages.", cat: "soc" },
-            { text: "Studying the travelogues of those living along the modern route.", cat: "lit" }
-        ]},
-        { s: "How should a global society define 'Justice'?", choices: [
-            { text: "Calculating the Gini coefficient and social-welfare utility functions.", cat: "qpe" },
-            { text: "Debating the first principles of fairness and the 'veil of ignorance'.", cat: "relphil" },
-            { text: "Studying how justice was historically codified across Chinese dynasties.", cat: "gcs" },
-            { text: "Analyzing the trade-offs between individual liberty and state planning.", cat: "ppe" }
-        ]},
-        { s: "An ancient city is discovered underwater. What is the priority?", choices: [
-            { text: "Analyzing the resource-exhaustion data that led to the city's collapse.", cat: "qpe" },
-            { text: "Reconstructing the emotional lives of citizens through their remaining letters.", cat: "hist" },
-            { text: "Deciphering temple inscriptions for lost cosmological beliefs.", cat: "relphil" },
-            { text: "Decoding the symbols and art to find the city's cultural values.", cat: "anth" }
-        ]},
-        { s: "AI begins to mimic human empathy. What is the most pressing question?", choices: [
-            { text: "The impact on labor-market efficiency and productivity metrics.", cat: "qpe" },
-            { text: "How this shifts our philosophical definition of 'The Person'.", cat: "relphil" },
-            { text: "How this will change the narratives of 'The Human' in literature.", cat: "lit" },
-            { text: "The regulatory and legal frameworks needed to govern sentient algorithms.", cat: "ppe" }
-        ]},
-        { s: "A global pandemic shifts society. How do you document it?", choices: [
-            { text: "Mapping epidemiological spread and vaccination uptake with multivariate data.", cat: "qpe" },
-            { text: "Writing a history of how past plagues transformed the nature of state power.", cat: "hist" },
-            { text: "Observing how people 'perform' safety and ritual in their daily lives.", cat: "anth" },
-            { text: "Exploring how the pandemic debate reflects modern Chinese identity.", cat: "gcs" }
-        ]},
-        { s: "Marriage rates are declining globally. What is the best study?", choices: [
-            { text: "Running regressions on fertility rates versus income and interest rates.", cat: "qpe" },
-            { text: "Examining how family structures shift under global capitalist systems.", cat: "soc" },
-            { text: "Analyzing the shifting metaphors for 'Family' in contemporary novels.", cat: "lit" },
-            { text: "Investigating the evolution of 'Filial Piety' in Chinese texts.", cat: "gcs" }
-        ]},
-        { s: "The climate is changing rapidly. What do we need most?", choices: [
-            { text: "Better atmospheric models and a more efficient global carbon market.", cat: "qpe" },
-            { text: "A re-evaluation of 'Wu Wei' as a model for environmental ethics.", cat: "relphil" },
-            { text: "A study of how indigenous cultures adapt their rituals to the change.", cat: "anth" },
-            { text: "The political economy of green energy and global carbon policy.", cat: "ppe" }
-        ]},
-        { s: "A new protest movement emerges. How do you understand it?", choices: [
-            { text: "Using network analysis to track the spread of dissent and mobilization.", cat: "qpe" },
-            { text: "Reading the movement's poetry and manifestos for hidden meaning.", cat: "lit" },
-            { text: "Analyzing how group identity and social solidarity are formed in the crowd.", cat: "soc" },
-            { text: "Debating the ethical limits of state authority versus liberty.", cat: "relphil" }
-        ]},
-        { s: "Looking at a 12th-century scroll. What captures you?", choices: [
-            { text: "The market price trends of ancient art in the global investment sector.", cat: "qpe" },
-            { text: "The brushstrokes as a visual language of a psychological state.", cat: "lit" },
-            { text: "The political context of the Song court that commissioned the art.", cat: "gcs" },
-            { text: "How the scroll functioned in the social life of the elite at the time.", cat: "hist" }
-        ]},
-        { s: "A village is disappearing. How do you save its memory?", choices: [
-            { text: "Digitizing all economic, property, and tax data for future researchers.", cat: "qpe" },
-            { text: "Writing a 'thick description' of the village's unique kinship systems.", cat: "anth" },
-            { text: "Analyzing the village's 'mythology' and how it defined its identity.", cat: "relphil" },
-            { text: "Investigating how the local dialect reflects the village's history.", cat: "lit" }
-        ]},
-        { s: "What is the future of 'Privacy' in the digital age?", choices: [
-            { text: "The trade-off between surveillance efficiency and consumer data value.", cat: "qpe" },
-            { text: "A philosophical debate on the 'Right to be Forgotten' as a human right.", cat: "relphil" },
-            { text: "A study of how surveillance functioned in Chinese governance history.", cat: "gcs" },
-            { text: "How the concept of 'the public' is socially and culturally constructed.", cat: "soc" }
-        ]},
-        { s: "Why do we feel 'Nostalgia' for eras we never experienced?", choices: [
-            { text: "Analyzing the market for 'retro' products using demand-elasticity data.", cat: "qpe" },
-            { text: "A literary analysis of 'The Golden Age' trope across cultures.", cat: "lit" },
-            { text: "A historical investigation of nostalgia first diagnosed as a disease.", cat: "hist" },
-            { text: "A study of how 'Retro-branding' fuels consumer identity in society.", cat: "soc" }
-        ]},
-        { s: "The moon is being colonized. What is the priority?", choices: [
-            { text: "Estimating the cost-per-ton of mineral extraction and transport logistics.", cat: "qpe" },
-            { text: "Establishing a set of 'Cosmic Ethics' for new settlements.", cat: "relphil" },
-            { text: "Studying how humans adapt their culture to a non-Earth environment.", cat: "anth" },
-            { text: "Drafting the social contract and legal constitutions for moon life.", cat: "ppe" }
-        ]},
-        { s: "A billionaire buys a major newspaper. What is the worry?", choices: [
-            { text: "The impact on advertising market share and media consolidation data.", cat: "qpe" },
-            { text: "The historical role of the 'Public Sphere' in maintaining democracy.", cat: "hist" },
-            { text: "The power of narrative to shape truth and 'bought' stories.", cat: "lit" },
-            { text: "How this ownership shifts the social perception of 'truth'.", cat: "soc" }
-        ]},
-        { s: "The 'Great Wall'. What is its most important aspect?", choices: [
-            { text: "The engineering logistics and the labor-cost of its construction.", cat: "qpe" },
-            { text: "Its function as a border between 'Civilization' and 'Barbarism'.", cat: "gcs" },
-            { text: "The psychological impact as a metaphor in literature.", cat: "lit" },
-            { text: "The social organization of the labor and tax systems that built it.", cat: "soc" }
-        ]},
-        { s: "Why is Shakespeare still read in China today?", choices: [
-            { text: "A statistical study on translation sales and curriculum trends.", cat: "qpe" },
-            { text: "A literary analysis of universal archetypes in a Chinese context.", cat: "lit" },
-            { text: "The history of how Shakespeare was 'imported' during the late Qing.", cat: "gcs" },
-            { text: "An ethnographic study of Chinese fans and their theater rituals.", cat: "anth" }
-        ]},
-        { s: "A robot asks for 'Rights'. How do you respond?", choices: [
-            { text: "Determine the economic liability of granting machines personhood.", cat: "qpe" },
-            { text: "Review the historical precedents of how 'Rights' were expanded.", cat: "hist" },
-            { text: "Debate the logical definition of 'Consciousness' and 'Moral Agency'.", cat: "relphil" },
-            { text: "Observe how humans begin to socially treat the robot as a 'person'.", cat: "anth" }
-        ]},
-        { s: "Studying the 'Silk Road' in a local village. What do you look at?", choices: [
-            { text: "The current trade volume and the local economic shift since the road.", cat: "qpe" },
-            { text: "The local folklore and legends survived from antiquity.", cat: "gcs" },
-            { text: "The religious architecture and how faiths left marks.", cat: "relphil" },
-            { text: "The institutional changes in local governance over centuries.", cat: "ppe" }
-        ]},
-        { s: "The world is ending tomorrow. What is the last thing you do?", choices: [
-            { text: "Backup the world's mathematical and scientific data onto a hard drive.", cat: "qpe" },
-            { text: "Gather your community for a final collective ritual of mourning.", cat: "relphil" },
-            { text: "Write down the story of your life for any who may find it.", cat: "lit" },
-            { text: "Observe and record how different cultures react to the end.", cat: "anth" }
-        ]},
-        { s: "A new language is discovered. What is the task?", choices: [
-            { text: "Digitally mapping the syntax to find mathematical linguistic universals.", cat: "qpe" },
-            { text: "Studying how the language shapes the community's unique view of time.", cat: "anth" },
-            { text: "Translating their sacred texts to find echoes of ancient world religions.", cat: "relphil" },
-            { text: "Analyzing how the language was used to resist historical colonization.", cat: "hist" }
-        ]},
-        { s: "A historic library is burning. What do you save first?", choices: [
-            { text: "Technical manuals on agricultural engineering and public health.", cat: "qpe" },
-            { text: "The only copy of an epic poem that defines a culture's identity.", cat: "lit" },
-            { text: "The secret diaries of a 16th-century court physician.", cat: "hist" },
-            { text: "Philosophical scrolls debating the nature of the afterlife.", cat: "relphil" }
-        ]},
-        { s: "The Chinese Social Credit system: Data problem or Civilizational evolution?", choices: [
-            { text: "Modeling the impact on market trust and transaction costs using game theory.", cat: "qpe" },
-            { text: "Analyzing it as a digital evolution of Legalist and Confucian governance.", cat: "gcs" },
-            { text: "Observing how people socially 'perform' virtue to maintain their score.", cat: "soc" },
-            { text: "Investigating the philosophical definition of 'Privacy' in a non-liberal state.", cat: "relphil" }
-        ]},
-        { s: "An AI wins a global prize for a 'masterpiece' painting. What is the inquiry?", choices: [
-            { text: "The impact on the 'intellectual property' market and art valuation metrics.", cat: "qpe" },
-            { text: "A philosophical debate on whether a machine can possess 'Aesthetic Agency'.", cat: "relphil" },
-            { text: "Analyzing the history of 'copying' vs 'originality' in Chinese art history.", cat: "gcs" },
-            { text: "How this changes the literary narrative of 'The Human' as the sole creator.", cat: "lit" }
-        ]},
-        { s: "A famine strikes a region. How do you analyze the cause?", choices: [
-            { text: "Modeling the failure of crop yields against global trade embargoes.", cat: "qpe" },
-            { text: "Investigating the political-economic failure of the local institutions.", cat: "ppe" },
-            { text: "Studying how the famine was recorded in the literature of the era.", cat: "lit" },
-            { text: "Analyzing the history of state grain-management systems in the region.", cat: "gcs" }
-        ]},
-        { s: "Why are some cities more creative than others?", choices: [
-            { text: "Measuring the density of IP filings and venture capital availability.", cat: "qpe" },
-            { text: "Studying the social networks and institutions that foster collaboration.", cat: "soc" },
-            { text: "Analyzing the history of the city as a cross-cultural trading hub.", cat: "hist" },
-            { text: "An ethnographic study of the city's street-art and subculture scenes.", cat: "anth" }
-        ]},
-        { s: "A species is going extinct. Why do we care?", choices: [
-            { text: "Modeling the impact on the global bio-resource economy and services.", cat: "qpe" },
-            { text: "The philosophical/religious value of life as a moral imperative.", cat: "relphil" },
-            { text: "Analyzing how the species is woven into local indigenous rituals.", cat: "anth" },
-            { text: "The history of how humans have managed 'Endangered' species globally.", cat: "hist" }
-        ]},
-        { s: "A 'Smart City' tracks every move. What is the concern?", choices: [
-            { text: "Optimizing urban flow and resource efficiency through data automation.", cat: "qpe" },
-            { text: "The shift in social surveillance and class control structures.", cat: "soc" },
-            { text: "The dystopian 'narrative' of the city in fiction and its effect on psyche.", cat: "lit" },
-            { text: "The political ethics of algorithmic governance in the social contract.", cat: "ppe" }
-        ]},
-        { s: "The bodies of ancient rulers are returned. Why?", choices: [
-            { text: "Analyzing the logistical cost and diplomatic trade-offs involved.", cat: "qpe" },
-            { text: "Investigating national identity and the 'Century of Humiliation' narrative.", cat: "gcs" },
-            { text: "The religious significance of ancestors returning to their soil.", cat: "relphil" },
-            { text: "A historical study of the original 'looting' of cultural heritage.", cat: "hist" }
-        ]},
-        { s: "996 work culture in tech. What is the analysis?", choices: [
-            { text: "Correlating work hours with marginal productivity and GDP growth.", cat: "qpe" },
-            { text: "Analyzing the collapse of the 'Social Contract' for modern youth.", cat: "soc" },
-            { text: "How 'labor' is portrayed in contemporary corporate narratives.", cat: "lit" },
-            { text: "The history of labor movements and the 8-hour day.", cat: "hist" }
-        ]},
-        { s: "A digital archive of a war is hacked. What is lost?", choices: [
-            { text: "Measuring the vulnerability of digital state-record infrastructures.", cat: "qpe" },
-            { text: "The loss of primary archival evidence for future historians.", cat: "hist" },
-            { text: "The fragmentation of a nation's collective literary story.", cat: "lit" },
-            { text: "The political economy of data sovereignty in conflict zones.", cat: "ppe" }
-        ]},
-        { s: "Climate refugees move to a new country. What is the focus?", choices: [
-            { text: "Predicting the shift in labor migration and capital costs.", cat: "qpe" },
-            { text: "The 'Culture Shock' and adaptation of rituals in the diaspora.", cat: "anth" },
-            { text: "The legal status of 'Stateless' individuals in international law.", cat: "ppe" },
-            { text: "The history of past climate-driven human migrations.", cat: "hist" }
-        ]},
-        { s: "Mining asteroids for rare minerals. What is the priority?", choices: [
-            { text: "Supply-chain logistics and mineral price modeling for the market.", cat: "qpe" },
-            { text: "The 'New Frontier' as a repeat of 18th-century colonial history.", cat: "hist" },
-            { text: "Establishing 'Cosmic Ethics' for non-terrestrial settlements.", cat: "relphil" },
-            { text: "The institutional governance of extra-planetary resources.", cat: "ppe" }
-        ]},
-        { s: "Mental health in elite universities. What is the cause?", choices: [
-            { text: "Statistical correlations between test pressure and health outcomes.", cat: "qpe" },
-            { text: "Structural causes like competition and social media toxicity.", cat: "soc" },
-            { text: "The 'Good Life' versus the 'Productive Life' in philosophy.", cat: "relphil" },
-            { text: "How student 'burnout' is narrativized in modern culture.", cat: "lit" }
-        ]},
-        { s: "Wearable tech monitors health. What is the interest?", choices: [
-            { text: "The market for 'quantified self' data and preventative health ROI.", cat: "qpe" },
-            { text: "How we 'perform' health for others in a social context.", cat: "anth" },
-            { text: "The body as a 'text' to be read and decoded by systems.", cat: "lit" },
-            { text: "The history of medical surveillance and biopower.", cat: "hist" }
-        ]},
-        { s: "Why do some religions survive and others die?", choices: [
-            { text: "Modeling the 'market share' of belief systems via demographic data.", cat: "qpe" },
-            { text: "Investigating the strength of ritual in creating social solidarity.", cat: "soc" },
-            { text: "Analyzing the textual adaptability of a faith to new cultures.", cat: "lit" },
-            { text: "The history of state suppression versus religious growth.", cat: "hist" }
-        ]},
-        { s: "The invention of the 'Steam Engine'. What was it?", choices: [
-            { text: "A catalyst for productivity-frontier shifts and economic growth.", cat: "qpe" },
-            { text: "A turning point in the history of human relationship with nature.", cat: "hist" },
-            { text: "A driver of class struggle and the birth of the proletariat.", cat: "soc" },
-            { text: "The birth of the 'Steampunk' aesthetic and literary industrialism.", cat: "lit" }
-        ]},
-        { s: "Returning to 'Nature'. What does it mean?", choices: [
-            { text: "Measuring the eco-system service value of preserved wilderness.", cat: "qpe" },
-            { text: "Investigating the Daoist 'Wu Wei' as an ethical return.", cat: "relphil" },
-            { text: "Analyzing the history of the 'Pastoral' ideal in the West and East.", cat: "hist" },
-            { text: "An ethnographic study of 'Glamping' as a social performance.", cat: "anth" }
-        ]},
-        { s: "The impact of TikTok on attention. What is the query?", choices: [
-            { text: "Modeling attention-span decay against advertising revenue metrics.", cat: "qpe" },
-            { text: "How short-form video changes our narrative consumption in literature.", cat: "lit" },
-            { text: "The fragmentation of the social 'Public Sphere' into niches.", cat: "soc" },
-            { text: "The history of 'Distraction' as a cultural concern.", cat: "hist" }
-        ]},
-        { s: "Is 'Greed' good? What is the analysis?", choices: [
-            { text: "Testing the 'Invisible Hand' theory via market efficiency models.", cat: "qpe" },
-            { text: "A philosophical inquiry into Virtue Ethics and the 'Middle Way'.", cat: "relphil" },
-            { text: "The history of 'Wealth' as a moral vs economic category.", cat: "hist" },
-            { text: "How greed is socialized into corporate structures.", cat: "soc" }
-        ]},
-        { s: "The colonization of Mars. Who should rule?", choices: [
-            { text: "Developing a resource-allocation game for survival efficiency.", cat: "qpe" },
-            { text: "Drafting the first 'Mars Social Contract' and legal code.", cat: "ppe" },
-            { text: "Asking how religion adapts to a planet without an 'Earth-Mother'.", cat: "relphil" },
-            { text: "Revisiting the history of the East India Company as a model.", cat: "hist" }
-        ]},
-        { s: "A new vaccine is developed. How is it distributed?", choices: [
-            { text: "Solving a logistics and equity optimization model for maximum ROI.", cat: "qpe" },
-            { text: "Analyzing the political economy of patent laws versus public good.", cat: "ppe" },
-            { text: "Studying how 'Health' is socialized as a right or a privilege.", cat: "soc" },
-            { text: "The history of vaccine resistance and public trust.", cat: "hist" }
-        ]},
-        { s: "Ancient ruins in a modern suburb. What is the duty?", choices: [
-            { text: "Calculating the property value loss against heritage tourism revenue.", cat: "qpe" },
-            { text: "The history of the site as a layer of civilizational memory.", cat: "hist" },
-            { text: "How the ruin serves as a 'Ghost' in the modern social imagination.", cat: "lit" },
-            { text: "The ethnographic meaning of the site to the local residents.", cat: "anth" }
-        ]},
-        { s: "Should we edit human genes? What is the concern?", choices: [
-            { text: "The long-term economic impact on human capital and productivity.", cat: "qpe" },
-            { text: "The philosophical definition of 'The Natural' and 'The Created'.", cat: "relphil" },
-            { text: "The potential for a new social 'Biological Class' hierarchy.", cat: "soc" },
-            { text: "The regulatory frameworks required for bio-sovereignty.", cat: "ppe" }
-        ]},
-        { s: "The future of the university. What is the task?", choices: [
-            { text: "Modeling the ROI of degrees against the cost of digital education.", cat: "qpe" },
-            { text: "The history of the University as a site of elite formation.", cat: "hist" },
-            { text: "A philosophical inquiry into the 'University of the Future' ideals.", cat: "relphil" },
-            { text: "The sociology of the 'Campus' as a social microcosm.", cat: "soc" }
-        ]}
-    ];
+const bank = [
+    // 48 Scenarios: Balanced so each major appears exactly 24 times.
+    { s: "A developing nation experiences a sudden and severe devaluation of its currency, leading to hyper-inflation.", c: { qpe: "I would build stochastic models to analyze price-level volatility and identify the variables necessary for currency equilibrium.", hist: "I would trace the temporal causality of previous economic collapses in that region to understand how they fundamentally altered the social fabric.", anth: "I would conduct on-the-ground fieldwork to uncover the informal bartering networks and survival strategies developed by local families.", ppe: "I would critique the state's expansion of emergency powers during the crisis and evaluate its long-term impact on civic trust." }},
+    { s: "The development of a global trade infrastructure is fundamentally reshaping regional power and economic connectivity.", c: { qpe: "I would evaluate the fiscal sustainability of host-country debt using multi-factor game theory and economic forecasting.", gcs: "I would analyze how modern state rhetoric leverages deep civilizational myths to construct political authority.", soc: "I would examine how high-speed infrastructure shifts existing class hierarchies and alters local power structures in rural hubs.", lit: "I would interpret the personal narratives and travelogues written by those moving along the route to understand the subjective experience of global connectivity." }},
+    { s: "A global forum is convened to decide how resources should be distributed to ensure long-term societal fairness.", c: { qpe: "I would apply Gini coefficients and social-welfare utility functions to identify an optimized distribution that maximizes aggregate welfare.", relphil: "I would seek a universal moral principle of fairness that remains valid regardless of an individual's specific social status.", gcs: "I would analyze how the concept of 'Equitable Governance' has been historically codified and practiced in classical traditions.", ppe: "I would evaluate the structural trade-offs between centralized state planning and the protection of individual economic liberty." }},
+    { s: "An ancient city is discovered beneath the sea, offering a pristine glimpse into a civilization that disappeared overnight.", c: { qpe: "I would analyze resource-consumption and climate data to identify the specific ecological failures that likely triggered the city's end.", hist: "I would reconstruct the daily emotional lives of the citizens by synthesizing evidence found in their discarded personal correspondence.", relphil: "I would reflect on what the city's sudden collapse tells us about the inherent transience of human ambition and the nature of the soul.", anth: "I would decode the visual symbols and architecture to uncover the unwritten social rules that governed public life." }},
+    { s: "Artificial Intelligence has reached a level of sophistication where it can convincingly mimic human empathy in real-time interactions.", c: { qpe: "I would forecast the marginal productivity gains and labor-market shifts expected in the service and care sectors due to automation.", relphil: "I would question whether a simulated mind can possess a genuine moral status or if consciousness is a unique biological requirement.", lit: "I would analyze how the concept of 'The Individual' is being re-written in contemporary fiction to accommodate non-human agents.", ppe: "I would design the new institutional and legal frameworks required to govern the rights and responsibilities of sentient algorithms." }},
+    { s: "A global health crisis fundamentally alters how people interact, work, and perceive safety in public spaces.", c: { qpe: "I would map the spread of the event using high-resolution multivariate datasets to identify the variables that predict vaccination uptake.", hist: "I would analyze how the crisis allowed the state to expand its reach and investigate if these changes follow previous historical patterns of power.", anth: "I would record how local communities adapted their burial rituals and social gatherings to maintain meaning during the emergency.", gcs: "I would explain how the crisis reveals deep civilizational tensions within modern identity and the traditional relationship with the state." }},
+    { s: "Marriage rates in major urban centers are dropping to historic lows, leading to concerns about future demographic stability.", c: { qpe: "I would calculate the correlation between fertility rates and the shifting cost of capital and education in urban environments.", soc: "I would explore how 'Family' as a social institution is breaking down and being replaced by new networks under global capitalism.", lit: "I would interpret the shifting metaphors for 'Belonging' and 'Commitment' in contemporary novels to understand the changing romantic psyche.", gcs: "I would investigate how the ancient obligation of Filial Piety is being redefined by a generation living in a high-pressure modern economy." }},
+    { s: "The Earth's climate is changing rapidly, requiring an urgent and coordinated response from all sectors of human society.", c: { qpe: "I would optimize carbon-market mechanisms and use predictive atmospheric modeling to manage the transition to green energy.", relphil: "I would argue for a re-evaluation of 'Non-Action' and ecological harmony as foundational ethics for our relationship with the planet.", hist: "I would conduct a study of how previous societies collapsed after they failed to respect the ecological limits of their environments.", ppe: "I would analyze the political economy of the green transition and the power dynamics between global energy blocs." }},
+    { s: "A massive and spontaneous social movement emerges online, challenging established authorities and demanding radical reform.", c: { qpe: "I would apply network cluster analysis to track the speed of mobilization and identify the key nodes of digital influence.", lit: "I would parse the movement's aesthetic symbols and manifestos to find the underlying collective desire and narrative meaning.", soc: "I would evaluate how the crowd forms a shared social identity through group solidarity and the subversion of existing hierarchies.", relphil: "I would question the ethical legitimacy of the movement's demands and their alignment with first principles of justice." }},
+    { s: "An exquisite silk scroll from a thousand years ago is the subject of a new international exhibition.", c: { qpe: "I would analyze the object's value as a tangible asset in the history of capital and its current role in the global art investment sector.", lit: "I would view the visual composition as a formal language expressing the artist's private, inner psychological state.", gcs: "I would investigate the court politics and the specific patron that dictated the scroll's content and its intended civilizational message.", hist: "I would analyze how the art functioned as a tool for social status and political signaling among the elite of that specific era." }},
+    { s: "A historic rural community is slated for relocation to make way for a large-scale industrial project.", c: { qpe: "I would build a comprehensive database of the economic and property shifts to analyze the long-term fiscal impact on the region.", anth: "I would map the complex kinship systems and family trees of the residents to understand what social bonds are being severed.", relphil: "I would capture the unique mythology and sacred stories that bind the community's sense of self and relationship to the land.", lit: "I would investigate how the community's local dialect and oral stories encode their specific history and psychological identity." }},
+    { s: "New technologies have made it possible to monitor almost every aspect of a citizen's digital life.", c: { qpe: "I would model the trade-off between surveillance efficiency and consumer utility to find an optimal point for data-sharing.", relphil: "I would debate whether 'being seen' is a fundamental violation of an inherent human right to a private, unobserved life.", gcs: "I would analyze how state surveillance has been a consistent feature of civilizational governance across different dynastic eras.", soc: "I would examine how the boundary between 'Public' and 'Private' is being socially reconstructed by current technology users." }},
+    { s: "Modern culture is increasingly focused on 'Nostalgia', with a massive market for products and media from previous decades.", c: { qpe: "I would analyze the market demand for nostalgic goods using price-elasticity data and consumer behavior modeling.", lit: "I would critique the 'Golden Age' archetype as it appears in world literature to understand why we romanticize the past.", hist: "I would trace how 'Nostalgia' transitioned from being diagnosed as a medical disease to becoming a dominant cultural mood.", soc: "I would investigate how nostalgia is used as a tool to reinforce modern group identities and exclude those who do not share that past." }},
+    { s: "Humanity is preparing for its first permanent lunar colony, requiring a complete rethink of how we live.", c: { qpe: "I would design the logistical plan for resource extraction and identify the variables for an efficient oxygen trade-flow between settlements.", relphil: "I would set a new 'Cosmic Ethic' for how we treat non-Earth environments that have never before been touched by human hands.", anth: "I would conduct an ethnographic study of how pioneer cultures adapt their social rituals to a gravity-restricted, non-human environment.", ppe: "I would draft the social contract and institutional laws required to maintain order in an extra-terrestrial society." }},
+    { s: "A multi-billionaire acquires the world's most influential news source, raising questions about the future of information.", c: { qpe: "I would evaluate the impact on advertising market share and use industry metrics to predict changes in content distribution.", hist: "I would compare this event to previous 'Information Monopolies' in history to see how they impacted the health of democracies.", lit: "I would analyze how the power to tell the 'Main Story' shapes our collective perception of truth and social reality.", soc: "I would investigate how this ownership shift alters the social construction of what we collectively consider to be a 'fact'." }},
+    { s: "The Great Wall remains one of the most recognizable structures on Earth, yet its purpose is still debated.", c: { qpe: "I would analyze the engineering logistics and the massive labor-cost of its construction to understand the state's resource capacity.", gcs: "I would define its role as a civilizational border that was used to distinguish the 'Self' from the 'Other' in classical thought.", lit: "I would explore the psychological weight of 'The Wall' as a metaphor for isolation and defense in modern literary works.", soc: "I would investigate the social hierarchies and tax-funded systems that were created to support such a massive undertaking." }},
+    { s: "The works of Shakespeare have become surprisingly popular in modern China, appearing in numerous translations and adaptations.", c: { qpe: "I would model the trends of translation sales and cultural education markets to identify the economic drivers of this popularity.", lit: "I would analyze how Shakespeare's narrative archetypes resonate with the local psyche in ways that transcend cultural boundaries.", gcs: "I would trace the history of his introduction during times of radical reform to see how he was used as a tool for modernization.", anth: "I would study the rituals and social behaviors of the modern theater-going public to see how they interact with these texts." }},
+    { s: "A laboratory develops a robot that appears to have reached a state of consciousness and is demanding peer-status.", c: { qpe: "I would map the robot's neural-network efficiency against human processing data to see if it meets the criteria for sentience.", hist: "I would review the historical expansion of who we consider a 'Person' to see if machines are the logical next step in that progression.", relphil: "I would question whether 'Consciousness' is a logical necessity for rights or if biological life is a prerequisite for a soul.", anth: "I would observe how humans begin to socially treat the object and investigate the symbolic rituals that define a 'peer'." }},
+    { s: "An archaeological team uncovers a village that sat directly on the ancient Silk Road for over five centuries.", c: { qpe: "I would measure the marginal change in trade volume and wealth distribution since the new high-speed rail replaced the ancient route.", gcs: "I would investigate the survival of ancient folklore and local myths that have been passed down through oral tradition since antiquity.", relphil: "I would analyze how competing religious architectures left physical marks on the town and influenced local cosmological beliefs.", ppe: "I would trace the institutional changes in local governance across centuries of shifting imperial and regional power." }},
+    { s: "Scientists announce that the Earth's life-support systems will fail within twenty-four hours, meaning the end of our species.", c: { qpe: "I would organize a final backup of the world's technical and scientific data to ensure our mathematical achievements survive in space.", relphil: "I would gather a community for a final collective ritual of meaning and reflect on our ethical duties as we face the end.", lit: "I would write the story of my life as a unique narrative arc, ensuring that a subjective record of human experience exists.", anth: "I would record a description of how different cultures are making sense of the end and the rituals they use to say goodbye." }},
+    { s: "A linguistic team discovers a new language in a remote valley that has no known connection to any other world language.", c: { soc: "I would analyze how this language serves as a primary boundary for social inclusion and the exclusion of outsiders.", anth: "I would study how the specific grammar of this language shapes the community's unique and non-linear view of time.", relphil: "I would translate their sacred texts to see if they contain echoes of universal religious questions found in other faiths.", hist: "I would analyze how the language was used as a tool for cultural resistance against previous attempts at colonization." }},
+    { s: "A historic library containing the only records of a lost civilization is caught in a massive, uncontrollable fire.", c: { ppe: "I would save the constitutional records and treaties that define our current legal rights and the social contract of the region.", lit: "I would save the only copy of an epic poem that provides the metaphors and symbols through which the people define their identity.", hist: "I would save the secret diaries of an anonymous family to preserve a ground-level view of how life was actually lived.", relphil: "I would save the foundational scrolls that debate the nature of ethics, justice, and the purpose of human existence." }},
+    { s: "The 'Metaverse' is becoming a dominant space for social interaction, commerce, and the performance of identity.", c: { qpe: "I would analyze the growth potential of virtual real-estate and use data-modeling to predict the impact on the global digital GDP.", relphil: "I would investigate how virtual existence challenges our traditional ethical definitions of human 'Suffering' and 'Presence'.", soc: "I would examine how existing social inequalities and class hierarchies are being mirrored and magnified in these digital spaces.", hist: "I would trace the historical evolution of 'Virtual' spaces in theater and fiction to find the roots of our desire to escape reality." }},
+    { s: "A severe famine strikes a specific region, leading to a humanitarian crisis and mass internal migration.", c: { qpe: "I would model the failure of crop yields against global trade data to identify the economic variables that predicted the collapse.", ppe: "I would investigate the political-economic failure of the local institutions and their inability to manage resource distribution.", lit: "I would study how the famine was recorded in the literature of the era to understand the psychological trauma of the community.", gcs: "I would analyze the history of state grain-management systems and their role in maintaining social stability throughout the centuries." }},
+    { s: "A study finds that some global cities are significantly more creative and innovative than others, despite having fewer resources.", c: { hist: "I would analyze the history of the city as a cross-cultural trading hub to see how past interactions foster modern innovation.", anth: "I would conduct an ethnographic study of the city's street-art and subculture scenes to understand how meaning is made in public.", soc: "I would study the specific social networks and local institutions that foster collaboration and the sharing of diverse ideas.", ppe: "I would evaluate the impact of local policy and governance on urban resource-management and the freedom of the individual." }},
+    { s: "Societies across the world are debating how to define 'Beauty' and whether it should be protected as a public good.", c: { gcs: "I would study how the concept of 'Shan' (the good and the beautiful) evolved in classical traditions and its role in governance.", relphil: "I would read foundational philosophical debates on Aesthetics to see if 'Beauty' is a universal truth or a subjective preference.", soc: "I would analyze how definitions of 'Beauty' are social constructs used to signify class status and exclude marginalized groups.", ppe: "I would investigate the institutional role of public aesthetics in city planning and its effect on civic pride and order." }},
+    { s: "A new border is suddenly drawn between two nations that previously shared an open and fluid relationship.", c: { hist: "I would research the long history of the borderland as a site of shared identity to understand the roots of the current tension.", anth: "I would investigate how the new border splits families and shared cultural rituals, fundamentally altering the lived experience.", ppe: "I would analyze the political-economic tensions between state sovereignty and the global flow of capital and labor.", soc: "I would examine the social impact of segmented territory on how the community perceives its own unity and belonging." }},
+    { s: "The concept of 'Sacrifice'—giving up something of value for the greater good—is being re-evaluated in the modern world.", c: { lit: "I would explore the trope of the 'Heroic Sacrifice' in world literature to see how it shapes our collective moral imagination.", relphil: "I would study the religious roots of sacrifice and its role in maintaining a sacred relationship with the divine or the group.", soc: "I would analyze how individuals are socialized to 'sacrifice' their own interests for the state or the corporate institution.", ppe: "I would evaluate the ethics of the social contract and the trade-offs required between individual liberty and public safety." }},
+    { s: "The sudden collapse of a long-standing dynasty leads to a period of radical intellectual and social upheaval.", c: { gcs: "I would study the internal intellectual debates on reform and the classical models that thinkers used to envision a new future.", hist: "I would research the external diplomatic and colonial pressures that accelerated the decline and eventual collapse of power.", lit: "I would analyze the literature produced during the upheaval to understand the collective psychological trauma of the era.", soc: "I would examine the collapse of the imperial social structure and the birth of new class-based movements in the aftermath." }},
+    { s: "speculative thinkers are attempting to project how human civilization will look and function in exactly 1,000 years.", c: { hist: "I would write a speculative 'History of the Future' by tracing current trends to their most likely long-term causal conclusions.", relphil: "I would philosophize on whether 'Post-Humanism' is ethically desirable and what it means for our current definition of 'The Good'.", lit: "I would analyze how contemporary science fiction serves as a social critique of our current fears about the future.", anth: "I would investigate how human biology might adapt to future cultural and technological shifts in non-linear ways." }},
+    { s: "Technical advancements have made it feasible to edit specific human genetic traits during the earliest stages of development.", c: { ppe: "I would design the regulatory protocols and international laws required to ensure global bio-sovereignty and prevent abuse.", relphil: "I would debate the philosophical boundaries between what is 'Natural' and what is 'Crafted' in the human experience.", soc: "I would analyze the potential for a new biological class hierarchy based on unequal access to these genetic enhancements.", anth: "I would investigate how different cultures define 'The Body' and the symbolic meaning they attach to biological perfection." }},
+    { s: "A 'Smart City' infrastructure is installed that uses a pervasive sensor network to track and optimize the lives of residents.", c: { ppe: "I would evaluate the ethics of algorithmic governance and its impact on the democratic rights of the city's inhabitants.", soc: "I would examine how pervasive surveillance shifts the way people 'perform' their public lives and the effect on social trust.", lit: "I would analyze the 'narratives' of the city found in dystopian fiction to see how they mirror current urban anxieties.", gcs: "I would investigate the role of techno-legalism in city planning and how it aligns with classical models of social order." }},
+    { s: "A species that is considered integral to a local ecosystem is on the verge of extinction due to human development.", c: { hist: "I would trace the historical patterns of how we have managed 'The Endangered' in the past to see where we went wrong.", relphil: "I would question whether non-human life-forms possess an inherent moral status that exists beyond their utility to humans.", anth: "I would study how the species is woven into the local community's rituals and how its loss would impact their meaning.", soc: "I would analyze the social impact of biodiversity loss on how the community perceives its own future and security." }},
+    { s: "Work-culture burnout in high-growth technology sectors is leading to widespread exhaustion among the youngest workers.", c: { hist: "I would examine the history of labor movements and the long-term fight for the regulated eight-hour workday and leisure.", soc: "I would analyze the collapse of the postwar 'Social Contract' and the shift toward an insecure, high-pressure professional class.", lit: "I would interpret how 'exhaustion' is used as a cultural trope in modern memoirs to signify a specific type of social success.", anth: "I would record the symbolic rituals of performative overwork and how they are used to signal status within a group." }},
+    { s: "Nations are currently arguing over whether ancient artifacts should be returned to their specific country of origin.", c: { hist: "I would reconstruct the archival history of the object's removal to identify the specific causal events of its displacement.", gcs: "I would investigate the artifact as a symbol of national grievance and its role in constructing a modern identity.", relphil: "I would reflect on the object's original status as a sacred entity and the ethical duty we have to its original creators.", lit: "I would analyze how the 'Restoration' of heritage is used as a narrative device to heal the collective trauma of the past." }},
+    { s: "Digital 'Echo Chambers' are increasingly accused of creating deep social and political polarization in modern democracies.", c: { hist: "I would trace the cultural history of propaganda and distraction to find the roots of our current digital vulnerability.", soc: "I would analyze the fragmentation of the shared public sphere into isolated social niches that share no common reality.", lit: "I would interpret how digital media shifts our long-form narrative habits and our ability to empathize with different stories.", anth: "I would investigate the rise of tribalism in digital subcultures and the symbols they use to identify 'Self' versus 'Enemy'." }},
+    { s: "Private corporations are beginning to look toward mining asteroids for rare minerals to fuel Earth's technology.", c: { hist: "I would view the 'New Frontier' as a repetition of colonial history and investigate if we are repeating the same mistakes.", relphil: "I would establish a set of 'Cosmic Ethics' for human expansion that respects environments outside of our own planet.", ppe: "I would design the institutional frameworks and international agreements required for extra-planetary resource governance.", anth: "I would study how the human body and mind adapt to the isolation and rituals of life in deep space settlements." }},
+    { s: "A remote dialect that has existed for centuries is being rapidly replaced by a standardized national language.", c: { gcs: "I would analyze the state's drive for civilizational unity through linguistic standards and its effect on regional autonomy.", lit: "I would interpret the loss of unique poetic metaphors and local stories that are encoded within that specific dialect.", anth: "I would study how the specific grammar of the language shaped the community's unique and non-linear view of time.", soc: "I would examine the relationship between linguistic capital and class mobility in the modern national economy." }},
+    { s: "Mental health and anxiety among students in elite universities are reaching levels that are concerning to health officials.", c: { soc: "I would investigate the structural causes of zero-sum competition and how social signaling creates an atmosphere of pressure.", relphil: "I would debate the philosophical tension between the pursuit of 'The Good Life' and the modern 'Productive Life'.", lit: "I would analyze how 'burnout' is used as a narrative trope in contemporary culture to justify a specific social hierarchy.", gcs: "I would investigate the long legacy of competitive scholarship and its relationship with family status and social order." }},
+    { s: "An AI system produces an artwork that is so sophisticated it wins a major international prize for 'Mastery'.", c: { gcs: "I would analyze the history of 'reproduction' and 'imitation' in Chinese artistic traditions to see if the machine follows that path.", relphil: "I would question if 'Aesthetic Agency' requires a biological subject or if 'Beauty' is purely an external, mathematical quality.", lit: "I would explore how this changes the narrative of 'human genius' and its role in the stories we tell about ourselves.", anth: "I would investigate the social recognition of machine art and the rituals through which we decide what is 'True Art'." }},
+    { s: "The fundamental ideal of the 'University' is being debated by those who believe education should be purely vocational.", c: { hist: "I would trace the history of the University as a site for elite social formation and its role in maintaining civilizational memory.", relphil: "I would reflect on the philosophical ideal of 'Education' (Paideia) versus the modern focus on purely 'Job Training'.", soc: "I would analyze the sociology of the 'Campus' as a social microcosm that prepares individuals for a specific social class.", ppe: "I would evaluate the institutional governance of higher education and its role in preparing citizens for a democratic society." }},
+    { s: "The invention of the steam engine is often cited as the singular moment that created the modern, industrial world.", c: { hist: "I would view this as a traumatic break in the history of the human relationship with the rhythms of the natural world.", soc: "I would analyze the birth of a new social class and the resulting struggle for power that occurred in the factories.", lit: "I would explore the birth of the 'Mechanical Metaphor' in fiction and its effect on how we tell stories about our bodies.", anth: "I would investigate the transformation of artisan culture and how the loss of hand-craft shifted human symbolic meaning." }},
+    { s: "A new movement is rising among urban youth that advocates for a 'Return to Nature' and a rejection of technology.", c: { hist: "I would analyze the history of the 'Pastoral Ideal' in both the West and the East to see if this is a recurring historical cycle.", relphil: "I would investigate 'Wu Wei' as an ethical model for modern environmentalism and the rejection of human over-intervention.", anth: "I would observe 'glamping' and outdoor retreats as a social performance of status and a specific type of cultural ritual.", soc: "I would examine how a 'Green' lifestyle has become a class signal used by the elite to distinguish themselves from others." }},
+    { s: "The impact of short-form, rapid-fire video content on the human attention span is becoming a major area of research.", c: { hist: "I would trace the cultural history of 'Distraction' and 'Speed' as human concerns that reappear with every new technology.", lit: "I would analyze how short-form video changes our narrative expectations and our ability to engage with long, complex literature.", soc: "I would examine the fragmentation of the shared public sphere into millions of isolated, personalized attention streams.", gcs: "I would investigate how language and visual symbols are used in digital China to construct a specific type of modern self." }},
+    { s: "Society is questioning whether 'Greed' is a biological necessity for growth or a socially learned behavior.", c: { hist: "I would trace the history of 'Wealth' as a moral category to see how it transitioned from a spiritual danger to a social goal.", relphil: "I would conduct a philosophical inquiry into Virtue Ethics and the 'Middle Way' between greed and total self-denial.", soc: "I would analyze how competitive accumulation is socialized into corporate structures and rewarded by modern institutions.", gcs: "I would investigate mercantile ethics in antiquity to see how classical thinkers balanced profit with social harmony." }},
+    { s: "A government is proposing a 'Universal Basic Income' where every citizen receives a monthly payment regardless of work.", c: { ppe: "I would analyze the trade-off between individual liberty and state redistribution within the context of the social contract.", anth: "I would investigate how this shift would fundamentally alter the communal identity and daily rituals of 'the worker'.", soc: "I would examine how such a payment might dismantle established labor class hierarchies and social status markers.", gcs: "I would compare the proposal to historical Chinese concepts of collective welfare and the 'Great Harmony'." }},
+    { s: "A legal team is arguing that a major river should be granted the status of a 'Person' to protect it from pollution.", c: { ppe: "I would design the new legal and political rights required for non-human subjects and determine who can speak for them.", gcs: "I would reflect on the river's status in classical civilizational ethics and the duty humans have to their natural environment.", anth: "I would study local folk practices that treat the river as a living relative to see how legal personhood mirrors lived belief.", lit: "I would analyze how the river has served as a primary character in regional lore and how that shapes its moral standing." }},
+    { s: "Deepfakes and 'Post-Truth' media are making it difficult for the public to distinguish between reality and fabrication.", c: { anth: "I would observe how people 'perform' truth-checking in their social groups and the symbols they use to signal a 'trusted' source.", ppe: "I would analyze the political economy of data sovereignty and the laws required to maintain a shared information common.", gcs: "I would trace the long history of state propaganda as a tool for civilizational control and the maintenance of social order.", lit: "I would interpret how digital narrative has reached a level where it is capable of shaping physical and social reality." }}
+];
 
-    // Shuffle and sample 15
-    const questions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 15);
+let scores = { qpe: 0, hist: 0, lit: 0, gcs: 0, relphil: 0, ppe: 0, soc: 0, anth: 0 };
+let currentIdx = 0;
+const shuffleArr = (arr) => arr.sort(() => Math.random() - 0.5);
+let activeSet;
 
-    let scores = { qpe: 0, hist: 0, lit: 0, gcs: 0, relphil: 0, ppe: 0, soc: 0, anth: 0 };
-    let currentIdx = 0;
-
-    function tally(cat) {
-        scores[cat]++;
-        currentIdx++;
-        if (currentIdx < questions.length) { render(); } 
-        else { showResults(); }
-    }
-
-    function render() {
-        document.getElementById('q-idx').innerText = currentIdx + 1;
-        document.getElementById('progress').style.width = `${(currentIdx / 15) * 100}%`;
-        const q = questions[currentIdx];
-        document.getElementById('scenario-text').innerText = q.s;
-        const grid = document.getElementById('options-grid');
-        grid.innerHTML = '';
-        q.choices.forEach((c, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerHTML = `<span>0${i+1}</span> ${c.text}`;
-            btn.onclick = () => tally(c.cat);
-            grid.appendChild(btn);
-        });
-    }
-
-    function showResults() {
-        document.getElementById('quiz-screen').style.display = 'none';
-        const res = document.getElementById('results-screen');
-        res.style.display = 'block';
-        
-        const sorted = Object.entries(scores).sort((a,b) => b[1] - a[1]);
-        const top = sorted[0][0];
-
-        const meta = {
-            qpe: ["The Systems Strategist (QPE)", "You seek universal laws through multivariate data and fiscal modeling. You want to understand the mechanics of the global machine."],
-            hist: ["The Temporal Detective (History)", "You value archives and the passage of time. You believe the present can only be understood by tracing the contingencies of the past."],
-            lit: ["The Interpreter (Literature)", "You seek meaning in the word. You believe metaphors and narratives reveal the deepest truths of the human psyche."],
-            gcs: ["The Civilizational Bridge (GCS)", "You value the rooted context of China. You see its history and philosophy as a vital lens for the global future."],
-            relphil: ["The Sage (Religion & Philosophy)", "You pursue first principles and the 'Ultimate'. You seek the ethical frameworks and ritual structures that drive human action."],
-            ppe: ["The Institutionalist (PPE)", "You are a structural thinker, interested in the social contract and the intersection of power, ethics, and policy."],
-            soc: ["The Structuralist (Sociology)", "You seek the systemic forces—class, institutions, and social structures—that shape collective experience."],
-            anth: ["The Ethnographer (Anthropology)", "You value 'thick description' and lived experience. You seek to understand the world through the symbols and rituals of the individual."]
-        };
-
-        document.getElementById('major-match').innerText = meta[top][0];
-        document.getElementById('major-desc').innerText = meta[top][1];
-        
-        const breakdown = document.getElementById('score-breakdown');
-        Object.entries(scores).forEach(([k, v]) => {
-            const div = document.createElement('div');
-            div.className = 'score-item';
-            div.innerText = `${k.toUpperCase()}: ${v}`;
-            breakdown.appendChild(div);
-        });
-    }
-
+function startQuiz() {
+    activeSet = shuffleArr([...bank]).slice(0, 15);
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('quiz-screen').classList.add('active');
     render();
-</script>
+}
 
+function render() {
+    const scenario = activeSet[currentIdx];
+    document.getElementById('progress').style.width = `${(currentIdx / 15) * 100}%`;
+    document.getElementById('scenario-text').innerText = scenario.s;
+    const grid = document.getElementById('options-grid');
+    grid.innerHTML = '';
+    const choices = shuffleArr(Object.keys(scenario.c));
+    choices.forEach((m, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span>0${i+1}</span> ${scenario.c[m]}`;
+        btn.onclick = () => {
+            scores[m]++; currentIdx++;
+            if (currentIdx < 15) render();
+            else showResults();
+        };
+        grid.appendChild(btn);
+    });
+}
+
+function showResults() {
+    document.getElementById('quiz-screen').classList.remove('active');
+    document.getElementById('results-screen').classList.add('active');
+    const sorted = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+    const top = sorted[0][0];
+    const meta = {
+        qpe: ["Systems Architect (QPE)", "You are naturally inclined to see the world as a series of variables and feedback loops. You seek universal laws through data and modeling."],
+        hist: ["Temporal Detective (History)", "You understand the present through its causality. You believe that meaning is found in the specific, unrepeatable events of the past."],
+        lit: ["Hermeneutic Interpreter (Literature)", "You seek truth in the interior world. You believe that stories and metaphors tell us more about ourselves than numbers ever can."],
+        gcs: ["Civilizational Analyst (GCS)", "You value the deep, rooted context of place. You believe that culture and civilizational history are the primary drivers of global change."],
+        relphil: ["First-Principles Sage (Rel/Phil)", "You seek the 'Ultimate Why'. You are concerned with the ethical frameworks and ritual structures that give human life its purpose."],
+        ppe: ["Institutional Structuralist (PPE)", "You are interested in how the world is organized. You seek to understand the social contract and the friction between ethics and power."],
+        soc: ["Social Systemicist (Sociology)", "You look at the 'invisible' forces. You seek to understand the institutions and structures that dictate our collective behavior."],
+        anth: ["Cultural Ethnographer (Anthropology)", "You value 'thick description' and lived experience. You seek to understand the world through the symbols, rituals, and voices of real people."]
+    };
+    document.getElementById('major-match').innerText = meta[top][0];
+    document.getElementById('major-desc').innerText = meta[top][1];
+    const breakdown = document.getElementById('score-breakdown');
+    Object.entries(scores).forEach(([k, v]) => {
+        const div = document.createElement('div');
+        div.className = 'score-item';
+        div.innerText = `${k.toUpperCase()}: ${v}`;
+        breakdown.appendChild(div);
+    });
+}
+</script>
 </body>
 </html>
